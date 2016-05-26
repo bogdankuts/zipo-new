@@ -7,9 +7,9 @@
             <div class="mdl-navigation__devider"></div>
 
             <a class="mdl-navigation__link @if ( $env == 'catalog_admin') active_nav @endif" href="/admin/catalog">Товары</a>
-            <a class="mdl-navigation__link" href="">Добавить товар</a>
+            <a class="mdl-navigation__link @if ( $env == 'change_item') active_nav @endif" href="/admin/change_item">Добавить товар</a>
             <div class="mdl-navigation__devider"></div>
-            <a class="mdl-navigation__link" href="">Новости</a>
+            <a class="mdl-navigation__link @if ( $env == 'change_item') active_nav @endif" href="/admin/articles">Новости</a>
             <a class="mdl-navigation__link" href="">Добавить новость</a>
             <div class="mdl-navigation__devider"></div>
 

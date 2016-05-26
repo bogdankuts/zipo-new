@@ -3,24 +3,30 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true ">&times;</span>
-					</button>
-					<h4 class="modal-title admin_add_subcategory_title">Редактирование категории/подкатегории</h4>
+					<div class="mdl-card__menu">
+						<button type="button" class="close mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" data-dismiss="modal" aria-label="Close">
+							<i class="material-icons">close</i>
+						</button>
+					</div>
+					<h4 class="mdl-card__title-text">Редактирование категории/подкатегории</h4>
 				</div>
 				<div class="modal-body">
 					<div class="change_block admin_select_category_div">
-						{{ Form::label('category', 'Категория', ['class'=>'admin_uni_label admin_select_category_label']) }}
-						{{ Form::select('category', ['Механическое_en' => 'Механическое_en', 'Тепловое_en' => 'Тепловое_en','Холодильное_en' => 'Холодильное_en','Моечное_en' => 'Моечное_en','Механическое_ru' => 'Механическое_ru','Тепловое_ru' => 'Тепловое_ru','Холодильное_ru' => 'Холодильное_ru','Моечное_ru' => 'Моечное_ru'], '', ['class'=>'form-control admin_select_category_select a_i_s_c_l', 'required', 'form' => 'none']) }}
+						<div class="label_block">
+							{{ Form::label('category', 'Категория', ['class'=>'admin_uni_label admin_select_category_label']) }}
+						</div>
+						{{ Form::select('category', ['Механическое_en' => 'Механическое_en', 'Тепловое_en' => 'Тепловое_en','Холодильное_en' => 'Холодильное_en','Моечное_en' => 'Моечное_en','Механическое_ru' => 'Механическое_ru','Тепловое_ru' => 'Тепловое_ru','Холодильное_ru' => 'Холодильное_ru','Моечное_ru' => 'Моечное_ru'], '', ['class'=>'form-control admin_select_category_select category_input a_i_s_c_l', 'required', 'form' => 'none', 'id'=>'popupCategorySelect']) }}
 					</div>
 					<div class="change_block admin_select_title_div">
-						{{ Form::label('subcat_id', 'Подкатегория', ['class'=>'admin_uni_label admin_select_category_label ascl']) }}
-						{{ Form::select('subcat_id', [], '', ['class'=>'form-control admin_select_title_text', 'required']) }}
+						<div class="label_block">
+							{{ Form::label('subcat_id', 'Подкатегория', ['class'=>'admin_uni_label admin_select_category_label ascl']) }}
+						</div>
+						{{ Form::select('subcat_id', [], '', ['class'=>'form-control admin_select_title_text', 'required', 'id'=>'popupSubcategoriesSelect']) }}
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-					<a class="change_subcat_button btn admin_add_button aadb admin_uni_button ">Сохранить</a>
+					<button type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" data-dismiss="modal">Закрыть</button>
+					<a class="change_subcat_button admin_add_button aadb mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">Сохранить</a>
 				</div>
 			</div><!-- /.modal-content -->
 		</div><!-- /.modal-dialog -->

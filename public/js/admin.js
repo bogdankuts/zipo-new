@@ -1,6 +1,4 @@
-/*------------------------------------------------
-| CKEDITOR EMBED
-------------------------------------------------*/
+//CKEDITOR EMBED
 if ($('#ckeditor').length) {
 	CKEDITOR.replace('ckeditor', {
 		filebrowserBrowseUrl 	   : '../kcfinder/browse.php?opener=ckeditor&type=files',
@@ -11,106 +9,100 @@ if ($('#ckeditor').length) {
 		filebrowserFlashUploadUrl  : '../kcfinder/upload.php?opener=ckeditor&type=flash',
 		// uiColor: '#702329'
 		// toolbar : [
-			// ['ajaxsave'],
-			// ['Bold', 'Italic', 'Underline', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink' ],
-			// ['Cut','Copy','Paste','PasteText'],
-			// ['Undo','Redo','-','RemoveFormat'],
-			// ['TextColor','BGColor'],
-			// ['Maximize', 'Image']
+		// ['ajaxsave'],
+		// ['Bold', 'Italic', 'Underline', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink' ],
+		// ['Cut','Copy','Paste','PasteText'],
+		// ['Undo','Redo','-','RemoveFormat'],
+		// ['TextColor','BGColor'],
+		// ['Maximize', 'Image']
 		// ],
 	});
 }
-/*----------------------------------------------*/
-
-/*------------------------------------------------
-| RUN SUBCATEGORIES FROM SELECT
-------------------------------------------------*/
-// INITIAL SET SUBCATS
-if ($('#category').length) {
-	if (true != $('.subcat_input').data('old-input')) {
-		send_category($('#category').val());
-	}
-
-	$('#category').on('change', function() {
-		send_category($('#category').val());	
-	});
-}
-// INITIAL SET SUBCATS
-var $selects = $('.category_input');
-if ($('.category_input').length) {
-	for (var i=0; i<$selects.length; i++){
-		send_category($selects.eq(i).val(), i);
-	}
-
-	$('.category_input').on('change', function() {
-		send_category($('.category_input').val());	
-	});
-}
 
 
-function send_category(category, number) {
-	$.ajax({
-		url: location.origin+'/admin/ajax_get_subcats',
-		type: 'POST',
-		dataType: "json",
-		data: {
-			'category' : category
-		},
-		success: function(data) {
-			$select = $('#subcat_id');
-			// CLEAR OLD SUBCATS
-			$select.html('');
+////RUN SUBCATEGORIES FROM SELECT
+//// INITIAL SET SUBCATS
+//if ($('#category').length) {
+//	if (true != $('.subcat_input').data('old-input')) {
+//		send_category($('#category').val());
+//	}
+//
+//	$('#category').on('change', function() {
+//		send_category($('#category').val());
+//	});
+//}
+//// INITIAL SET SUBCATS
+//var $selects = $('.category_input');
+//if ($('.category_input').length) {
+//	for (var i=0; i<$selects.length; i++){
+//		send_category($selects.eq(i).val(), i);
+//	}
+//
+//	$('.category_input').on('change', function() {
+//		send_category($('.category_input').val());
+//	});
+//}
+//
+//function send_category(category, number) {
+//	$.ajax({
+//		url: location.origin+'/admin/ajax-get-subcategories',
+//		type: 'POST',
+//		dataType: "json",
+//		data: {
+//			'category' : category
+//		},
+//		success: function(data) {
+//			$select = $('#subcat_id');
+//			// CLEAR OLD SUBCATS
+//			$select.html('');
+//
+//			for (var i=0; i<data.length; i++) {
+//				var subcat = data[i]['subcat'];
+//				var subcat_id = data[i]['subcat_id'];
+//
+//				var $option = $("<option value='"+subcat_id+"'>"+subcat+"</option>");
+//				$select.append($option);
+//			}
+//
+//			/*------------------------------------------------
+//			| Select needed option
+//			------------------------------------------------*/
+//			var subcat_id = $('#subcat_id').data('id');
+//			$('#subcat_id').val(subcat_id);
+//
+//			if(number) {
+//				var $subcat = $('.subcat_input').eq(number);
+//				// CLEAR OLD SUBCATS
+//				$subcat.html('');
+//
+//				for (var i=0; i<data.length; i++) {
+//					var subcat = data[i]['subcat'];
+//					var subcat_id = data[i]['subcat_id'];
+//
+//					var $option = $("<option value='"+subcat_id+"'>"+subcat+"</option>");
+//					$subcat.append($option);
+//				}
+//
+//				/*------------------------------------------------
+//				| Select needed option
+//				------------------------------------------------*/
+//				var subcat_id = $subcat.data('id');
+//				$subcat.val(subcat_id);
+//
+//			}
+//
+//			// $('[name=options] option').filter(function() {
+//			//     return ($(this).text() == 'Blue'); //To select Blue
+//			// }).prop('selected', true);
+//		},
+//		error: function(data, error, error_details){
+//			console.log("err:",error, error_details);
+//			console.log(data);
+//		}
+//	});
+//}
 
-			for (var i=0; i<data.length; i++) {
-				var subcat = data[i]['subcat'];
-				var subcat_id = data[i]['subcat_id'];
-
-				var $option = $("<option value='"+subcat_id+"'>"+subcat+"</option>");
-				$select.append($option);
-			}
-
-			/*------------------------------------------------
-			| Select needed option
-			------------------------------------------------*/
-			var subcat_id = $('#subcat_id').data('id');
-			$('#subcat_id').val(subcat_id);
-
-			if(number) {
-				var $subcat = $('.subcat_input').eq(number);
-				// CLEAR OLD SUBCATS
-				$subcat.html('');
-
-				for (var i=0; i<data.length; i++) {
-					var subcat = data[i]['subcat'];
-					var subcat_id = data[i]['subcat_id'];
-
-					var $option = $("<option value='"+subcat_id+"'>"+subcat+"</option>");
-					$subcat.append($option);
-				}
-
-				/*------------------------------------------------
-				| Select needed option
-				------------------------------------------------*/
-				var subcat_id = $subcat.data('id');
-				$subcat.val(subcat_id);
-				
-			}
-			
-			// $('[name=options] option').filter(function() { 
-			//     return ($(this).text() == 'Blue'); //To select Blue
-			// }).prop('selected', true);
-		}, 
-		error: function(data, error, error_details){
-			console.log("err:",error, error_details);
-			console.log(data);
-		}
-	});	
-}
-/*-----------------------------------------------*/
-
-/*------------------------------------------------
-| DELETE ICON FORM SUBMIT
-------------------------------------------------*/
+//DELETE ICON FORM SUBMIT
 $('.delete_items_group_icon').on('click', function(evt) {
 	evt.preventDefault();
 	if (confirm('Подтвердить удаление')) {
@@ -120,10 +112,9 @@ $('.delete_items_group_icon').on('click', function(evt) {
 		return false;
 	}
 });
-/*----------------------------------------------*/
-/*------------------------------------------------
-| DELETE PDF ICON FORM SUBMIT
-------------------------------------------------*/
+
+
+//DELETE PDF ICON FORM SUBMIT
 $('.del_pdf').on('click', function(evt) {
 	evt.preventDefault();
 	if (confirm('Подтвердить удаление')) {
@@ -133,52 +124,45 @@ $('.del_pdf').on('click', function(evt) {
 		return false;
 	}
 });
-/*----------------------------------------------*/
 
-// CLEAR ITEM BUTTON
-$('.clear_item_button').on('click', function(e) {
-	e.preventDefault();
-	var $form = $('.update_item_form'); 
-	$form.find('input[name="title"]').val("");
-	$form.find('input[name="code"]').val("");
-	$form.find('select[name="category"]').val("Механическое_en");
-	send_category("Механическое_en");
-	var first_p = $form.find('select[name="producer_id"] option').eq(0).val();
-	$form.find('select[name="producer_id"]').val(first_p);
-	$form.find('input[name="price"]').val("");
-	$form.find('input[name="currency"]').val("РУБ");
-	$form.find('input[name="procurement"]').prop("checked", true)
-	$form.find('textarea[name="description"]').val("");
-	$form.find('input[name="special"]').prop("checked", false)
-	$form.find('input[name="hit"]').prop("checked", false)
-});
+
+//// CLEAR ITEM BUTTON
+//$('.clear_item_button').on('click', function(e) {
+//	e.preventDefault();
+//	var $form = $('.update_item_form');
+//	$form.find('input[name="title"]').val("");
+//	$form.find('input[name="code"]').val("");
+//	$form.find('select[name="category"]').val("Механическое_en");
+//	send_category("Механическое_en");
+//	var first_p = $form.find('select[name="producer_id"] option').eq(0).val();
+//	$form.find('select[name="producer_id"]').val(first_p);
+//	$form.find('input[name="price"]').val("");
+//	$form.find('input[name="currency"]').val("РУБ");
+//	$form.find('input[name="procurement"]').prop("checked", true)
+//	$form.find('textarea[name="description"]').val("");
+//	$form.find('input[name="special"]').prop("checked", false)
+//	$form.find('input[name="hit"]').prop("checked", false)
+//});
+
+
 // CLEAR ARTICLE BUTTON
 $('.article_clean').on('click', function(e) {
 	e.preventDefault();
-	var $form = $('.article_update_form'); 
+	var $form = $('.article_update_form');
 	$form.find('input[name="title"]').val("");
 	$form.find('input[name="weight"]').val("");
 	// $form.find('textarea[name="body"]').val("");
 	CKEDITOR.instances.editor1.setData('');
 });
-/*----------------------------------------------*/
 
-/*------------------------------------------------
-| CHANGE SELECT DEPENDING ON CATEGORY
-------------------------------------------------*/
+
+//CHANGE SELECT DEPENDING ON CATEGORY
 $('.admin_one_cat_add').on('click', function() {
 	var category = $(this).data('category');
 	$('.create_category').val(category);
 });
-/*----------------------------------------------*/
 
-/*------------------------------------------------
-| FILE UPLOAD
-------------------------------------------------*/
-$('#trigger_link_img').click(function(e){
-	e.preventDefault();
-	$('.browse_img_admin').trigger('click');
-});
+
 //$('.add_img').click(function(e){
 //	e.preventDefault();
 //	console.log($(this).closest('.browse_img_admin'));
@@ -222,18 +206,6 @@ $('#trigger_link_img').click(function(e){
 //	});
 //});
 
-// DELETE IMG ICON
-function delegateDeleteEvent() {
-	$('.delete_img_icon_ajax').on('click', function() {
-		var $img = $('.items_item_img');
-		var $input = $('.inserted_input');
-
-		$('.inserted_input').val('no_photo.png');
-		$img.attr('src', location.origin+'/img/photos/no_photo.png');
-		$(this).remove();
-	});
-}
-delegateDeleteEvent();
 
 /*------------------------------------------------
 | AJAX DELETE FILE FROM SERVER
@@ -248,219 +220,205 @@ delegateDeleteEvent();
 // 		},
 // 		success: function(data) {
 // 			// console.log(data);
-// 		}, 
+// 		},
 // 		error: function(data, error, error_details){
 // 			console.log("err:",error, error_details);
 // 			console.log(data);
 // 		}
-// 	});	
+// 	});
 // }
 
 
-/*------------------------------------------------
-| COUNT CHEKED
-------------------------------------------------*/
-function countChecked($num, $str1, $str2, $str3) {
-	$val = $num % 100;
+////COUNT CHEKED
+//function countChecked($num, $str1, $str2, $str3) {
+//	$val = $num % 100;
+//
+//	if ($val > 10 && $val < 20) {
+//		return $num+' '+$str3;
+//	} else {
+//		$val = $num % 10;
+//		if ($val == 1) {
+//			return $num+' '+$str1;
+//		} else if ($val > 1 && $val < 5) {
+//			return $num+' '+$str2;
+//		} else {
+//			return $num+' '+$str3;
+//		}
+//	}
+//}
+//
+//var message = countChecked(0, 'элемент', 'элемента', 'элементов');
+//$(".selected_quantity").text('Выбрано: '+message);
+//$(".admin_items_footer .admin_footer_btn").attr('disabled');
+//
+//$( ".admin_main_content_items input[type=checkbox]" ).on("click", function() {
+//	var n = $(".admin_main_content_items input:checked").length;
+//	var message = countChecked(n, 'элемент', 'элемента', 'элементов');
+//	$(".selected_quantity").text('Выбрано: '+message);
+//
+//	if (n == 0) {
+//		$(".admin_uni_button").addClass('disabled');
+//	} else {
+//		$(".admin_uni_button").removeClass('disabled');
+//	}
+//});
+//
+//
+////GET CHECKED IDS
+//IDS = [];
+//$(".admin_main_content_items input[type=checkbox]").on("change", function(){
+//	var checkedID = $(this).data("id");
+//	IDS.push(checkedID);
+//});
+//
+//
+///*------------------------------------------------
+//| ATTACH TO PDF BUTTON
+//------------------------------------------------*/
+//// $('.add_to_pdf').on('click', function(e) {
+//// 	e.preventDefault();
+//// 	var subcat_id = $('.admin_select_title_text').val();
+//// 	if (subcat_id < 1) {
+//// 		alert('Вы должны создать подкатегорию!');
+//// 		return false;
+//// 	} else {
+//// 		$.ajax({
+//// 			url: location.origin+'/admin/ajax_change_subcat',
+//// 			type: 'POST',
+//// 			dataType: "json",
+//// 			data: {
+//// 				'ids' 		: IDS,
+//// 				'subcat_id'	: subcat_id
+//// 			},
+//// 			success: function(data) {
+//// 				location.reload();
+//// 			},
+//// 			error: function(data, error, error_details){
+//// 				console.log("err:",error, error_details);
+//// 				console.log(data);
+//// 				console.log(JSON.stringify(data.responseText, '\\', ''));
+//// 			}
+//// 		});
+//// 	}
+//// });
+///*----------------------------------------------*/
+//
+////CHANGE SUBCAT BUTTON
+//$('.change_subcat_button').on('click', function(e) {
+//	e.preventDefault();
+//	var subcat_id = $('.admin_select_title_text').val();
+//	if (subcat_id < 1) {
+//		alert('Вы должны создать подкатегорию!');
+//		return false;
+//	} else {
+//		$.ajax({
+//			url: location.origin+'/admin/ajax_change_subcat',
+//			type: 'POST',
+//			dataType: "json",
+//			data: {
+//				'ids' 		: IDS,
+//				'subcat_id'	: subcat_id
+//			},
+//			success: function(data) {
+//				location.reload();
+//			},
+//			error: function(data, error, error_details){
+//				console.log("err:",error, error_details);
+//				console.log(data);
+//				console.log(JSON.stringify(data.responseText, '\\', ''));
+//			}
+//		});
+//	}
+//});
+//
+//
+////CHANGE PDF BUTTON
+//$('.change_item_pdf').on('click', function(e) {
+//	var pdf_id = $('.admin_select_pdf').val();
+//	$.ajax({
+//		url: location.origin+'/admin/ajax_change_pdf',
+//		type: 'POST',
+//		dataType: "json",
+//		data: {
+//			'ids' 		: IDS,
+//			'pdf_id'	: pdf_id
+//		},
+//		success: function(data) {
+//			location.reload();
+//		},
+//		error: function(data, error, error_details){
+//			console.log("err:",error, error_details);
+//			console.log(data);
+//			console.log(JSON.stringify(data.responseText, '\\', ''));
+//		}
+//	});
+//});
+//
+//
+////DELETE GROUP BUTTON
+//$('.delete_group_button').on('click', function(e) {
+//	e.preventDefault();
+//
+//	function ajax_delete_group() {
+//		$.ajax({
+//			url: location.origin+'/admin/ajax_delete_group',
+//			type: 'POST',
+//			dataType: "json",
+//			data: {
+//				'ids' : IDS,
+//			},
+//			success: function(data) {
+//				location.reload();
+//			},
+//			error: function(data, error, error_details){
+//				console.log("err: ",error, error_details);
+//				console.log(data);
+//				console.log(JSON.stringify(data.responseText, '\\', ''));
+//			}
+//		});
+//	}
+//
+//	if (confirm('Подтвердить удаление')) {
+//		ajax_delete_group();
+//	} else {
+//		return false;
+//	}
+//});
+//
+//
+////CHANGE HIT SPECAIL PROCUREMENT
+//$('.ajax_change_state').on('click', function(e) {
+//	e.preventDefault();
+//	var url = $(this).data('url');
+//
+//	$.ajax({
+//		url: location.origin+url,
+//		type: 'POST',
+//		dataType: "json",
+//		data: {
+//			'ids' : IDS,
+//		},
+//		success: function(data) {
+//			location.reload();
+//		},
+//		error: function(data, error, error_details){
+//			console.log("err: ",error, error_details);
+//			console.log(data);
+//			console.log(JSON.stringify(data.responseText, '\\', ''));
+//		}
+//	});
+//});
 
-	if ($val > 10 && $val < 20) {
-		return $num+' '+$str3;
-	} else {
-		$val = $num % 10;
-		if ($val == 1) {
-			return $num+' '+$str1;
-		} else if ($val > 1 && $val < 5) {
-			return $num+' '+$str2;
-		} else {
-			return $num+' '+$str3;
-		}
-	}
-}
 
-var message = countChecked(0, 'элемент', 'элемента', 'элементов');
-$(".selected_quantity").text('Выбрано: '+message);
-$(".admin_items_footer .admin_uni_button").addClass('disabled');
-
-$( ".admin_main_content_items input[type=checkbox]" ).on("click", function() {
-	var n = $(".admin_main_content_items input:checked").length;
-	var message = countChecked(n, 'элемент', 'элемента', 'элементов');
-	$(".selected_quantity").text('Выбрано: '+message);
-
-	if (n == 0) {
-		$(".admin_uni_button").addClass('disabled');
-	} else {
-		$(".admin_uni_button").removeClass('disabled');
-	}
-});
-/*----------------------------------------------*/
-
-
-/*------------------------------------------------
-| GET CHECKED IDS
-------------------------------------------------*/
-IDS = [];
-$(".admin_main_content_items input[type=checkbox]").on("change", function(){
-	var checkedID = $(this).data("id");
-	IDS.push(checkedID);
-});
-/*----------------------------------------------*/
-
-/*------------------------------------------------
-| ATTACH TO PDF BUTTON
-------------------------------------------------*/
-// $('.add_to_pdf').on('click', function(e) {
-// 	e.preventDefault();
-// 	var subcat_id = $('.admin_select_title_text').val();
-// 	if (subcat_id < 1) {
-// 		alert('Вы должны создать подкатегорию!');
-// 		return false;
-// 	} else {
-// 		$.ajax({
-// 			url: location.origin+'/admin/ajax_change_subcat',
-// 			type: 'POST',
-// 			dataType: "json",
-// 			data: {
-// 				'ids' 		: IDS,
-// 				'subcat_id'	: subcat_id
-// 			},
-// 			success: function(data) {
-// 				location.reload();
-// 			}, 
-// 			error: function(data, error, error_details){
-// 				console.log("err:",error, error_details);
-// 				console.log(data);
-// 				console.log(JSON.stringify(data.responseText, '\\', ''));
-// 			}
-// 		});
-// 	}
-// });
-/*----------------------------------------------*/
-
-/*------------------------------------------------
-| CHANGE SUBCAT BUTTON
-------------------------------------------------*/
-$('.change_subcat_button').on('click', function(e) {
-	e.preventDefault();
-	var subcat_id = $('.admin_select_title_text').val();
-	if (subcat_id < 1) {
-		alert('Вы должны создать подкатегорию!');
-		return false;
-	} else {
-		$.ajax({
-			url: location.origin+'/admin/ajax_change_subcat',
-			type: 'POST',
-			dataType: "json",
-			data: {
-				'ids' 		: IDS,
-				'subcat_id'	: subcat_id
-			},
-			success: function(data) {
-				location.reload();
-			}, 
-			error: function(data, error, error_details){
-				console.log("err:",error, error_details);
-				console.log(data);
-				console.log(JSON.stringify(data.responseText, '\\', ''));
-			}
-		});
-	}
-});
-/*----------------------------------------------*/
-/*------------------------------------------------
-| CHANGE PDF BUTTON
-------------------------------------------------*/
-$('.change_item_pdf').on('click', function(e) {
-	var pdf_id = $('.admin_select_pdf').val();
-	$.ajax({
-		url: location.origin+'/admin/ajax_change_pdf',
-		type: 'POST',
-		dataType: "json",
-		data: {
-			'ids' 		: IDS,
-			'pdf_id'	: pdf_id
-		},
-		success: function(data) {
-			location.reload();
-		}, 
-		error: function(data, error, error_details){
-			console.log("err:",error, error_details);
-			console.log(data);
-			console.log(JSON.stringify(data.responseText, '\\', ''));
-		}
-	});
-});
-/*----------------------------------------------*/
-/*------------------------------------------------
-| DELETE GROUP BUTTON
-------------------------------------------------*/
-$('.delete_group_button').on('click', function(e) {
-	e.preventDefault();
-
-	function ajax_delete_group() {
-		$.ajax({
-			url: location.origin+'/admin/ajax_delete_group',
-			type: 'POST',
-			dataType: "json",
-			data: {
-				'ids' : IDS,
-			},
-			success: function(data) {
-				location.reload();
-			}, 
-			error: function(data, error, error_details){
-				console.log("err: ",error, error_details);
-				console.log(data);
-				console.log(JSON.stringify(data.responseText, '\\', ''));
-			}
-		});	
-	}	
-
-	if (confirm('Подтвердить удаление')) {
-		ajax_delete_group();
-	} else {
-		return false;
-	}
-});
-/*----------------------------------------------*/
-
-/*------------------------------------------------
-| CHANGE HIT SPECAIL PROCUREMENT
-------------------------------------------------*/
-$('.ajax_change_state').on('click', function(e) {
-	e.preventDefault();
-	var url = $(this).data('url');
-
-	$.ajax({
-		url: location.origin+url,
-		type: 'POST',
-		dataType: "json",
-		data: {
-			'ids' : IDS,
-		},
-		success: function(data) {
-			location.reload();
-		}, 
-		error: function(data, error, error_details){
-			console.log("err: ",error, error_details);
-			console.log(data);
-			console.log(JSON.stringify(data.responseText, '\\', ''));
-		}
-	});	
-});
-/*----------------------------------------------*/
-
-/*------------------------------------------------
-| EXCEL IMPORT
-------------------------------------------------*/
+//EXCEL IMPORT
 $('form.admin_panel_import input[type="file"]').on('click', function() {
 	var filepath = $(this).val();
 	var index = filepath.lastIndexOf("\\");
 	console.log(index);
 });
 
-/*------------------------------------------------
-| RUN CONTSCT FROM BUTTON
-------------------------------------------------*/
+
+//RUN CONTSCT FROM BUTTON
 $('.contact_form_button').on('click', function(evt) {
 	evt.preventDefault();
 	var contactFormTag = $('#bcf-trigger')[0];
@@ -475,9 +433,11 @@ $('.contact_form_button').on('click', function(evt) {
 
 	// if (typeof contactFormTag.click != 'undefined') {} // should work fine
 	// if (contactFormTag.hasOwnProperty('click')) {} // not own property!
-	
+
 	// return false; // doesn't work even in IE11 and Mozilla with dispatchEvent() but fine with just click()
 });
+
+
 /*------------------------------------------------
 | CHANGE LONG SUBCATS FONT
 ------------------------------------------------*/
@@ -528,37 +488,37 @@ $('.contact_form_button').on('click', function(evt) {
 // });
 
 
-Category = {
-	run : function () {
-		var categories = $('.js_select_category');
-		for (var i=0; i<categories.length; i++) {
-			var $category = $(categories[i]);
-			$category.on('change', Category.change);
-			$category.change();
-
-			var category = $category.data('id');
-			$category.closest('form').find('.js_select_subcat').val(subcat_id);
-		}
-	},
-	change : function () {
-		var current = $(this).val();
-		for (category in CATEGORIES) {
-			if (current == category) {
-				var subcats = CATEGORIES[category];
-			}
-		}
-		var $options = [];
-
-		if ('other' == current) {
-			$options.push($("<option value='0'>Не указано</option>"));
-		} else {
-			for (i = 0; i<subcats.length; i++) {
-				var subcat = subcats[i];
-				$options.push($("<option value="+subcat.subcat_id+">"+subcat.subcat+"</option>"));
-			};
-		}
-
-		$(this).closest('form').find('.js_select_subcat').html($options);
-	}
-}
-Category.run();
+//Category = {
+//	run : function () {
+//		var categories = $('.js_select_category');
+//		for (var i=0; i<categories.length; i++) {
+//			var $category = $(categories[i]);
+//			$category.on('change', Category.change);
+//			$category.change();
+//
+//			var category = $category.data('id');
+//			$category.closest('form').find('.js_select_subcat').val(subcat_id);
+//		}
+//	},
+//	change : function () {
+//		var current = $(this).val();
+//		for (category in CATEGORIES) {
+//			if (current == category) {
+//				var subcats = CATEGORIES[category];
+//			}
+//		}
+//		var $options = [];
+//
+//		if ('other' == current) {
+//			$options.push($("<option value='0'>Не указано</option>"));
+//		} else {
+//			for (i = 0; i<subcats.length; i++) {
+//				var subcat = subcats[i];
+//				$options.push($("<option value="+subcat.subcat_id+">"+subcat.subcat+"</option>"));
+//			};
+//		}
+//
+//		$(this).closest('form').find('.js_select_subcat').html($options);
+//	}
+//}
+//Category.run();

@@ -23,6 +23,12 @@ class NewAdminController extends BaseController {
 			return $title = 'Новые Статьи';
 		} elseif ($route == 'catalog_admin' || $route == 'items_admin') {
 			return $title = 'Каталог';
+		} elseif ($route == 'items_admin_change') {
+			return $title = 'Добавление/Изменение товара';
+		} elseif ($route == 'articles_admin') {
+			return $title = 'Статьи';
+		} elseif ($route == 'article_admin_change') {
+			return $title = 'Добавление/Изменение статьи';
 		}
 	}
 
@@ -93,6 +99,7 @@ class NewAdminController extends BaseController {
 
 		return $results;
 	}
+
 	private function getRecentDoneOrders() {
 		$results = Order::getRecentDoneOrders();
 		foreach ($results as $result) {
@@ -172,7 +179,7 @@ class NewAdminController extends BaseController {
 
 			$this->getNotifications($last_visit);
 
-//			$this->updateLastAdminVisit();
+//			$this->updateLastAdminVisit(); TODO:: uncomment this
 
 			return View::make('new_admin/dashboard')->with([
 					'env' 				            => 'dashboard',
@@ -273,6 +280,292 @@ class NewAdminController extends BaseController {
 		$item->save();
 	}
 
+	public function setSpecial() {
+		$ids = Input::get('ids');
+
+		Item::whereIn('item_id', $ids)->update(['special' => DB::raw('!special')]);
+
+		return Response::json($ids);
+	}
+
+	public function setHit() {
+		$ids = Input::get('ids');
+
+		Item::whereIn('item_id', $ids)->update(['hit' => DB::raw('!hit')]);
+
+		return Response::json($ids);
+	}
+
+	public function setProcurement() {
+		$ids = Input::get('ids');
+
+		Item::whereIn('item_id', $ids)->update(['procurement' => DB::raw('!procurement')]);
+
+		return Response::json($ids);
+	}
+
+	public function deleteGroup() {
+		$ids = Input::get('ids');
+
+		Item::destroy($ids);
+
+		return Response::json($ids);
+	}
+
+	public function changeSubcategory() {
+		$ids = Input::get('ids');
+		$fields = Input::all();
+		unset($fields['ids']);
+
+		Item::whereIn('item_id', $ids)->update($fields);
+
+		return Response::json($ids);
+	}
+
+	public function getSubcategories() {
+		$category = Input::get('category');
+		$all = Subcat::readAllSubcats();
+		$subcats = $all[$category];
+
+		return Response::json($subcats);
+	}
+
+	public function ajaxDeleteItem() {
+		$item = Item::find(Input::get('item_id'));
+
+		if ($item->photo != 'no_photo.png') {
+			$this->deletePhoto($item->photo);
+		}
+		$item->delete();
+
+		return Redirect::back();
+	}
+
+	public function changeItem() {
+		return View::make('new_admin/change_item')->with([
+			'env' 		=> 'change_item',
+			'item'		=> Item::__items()->find(Input::get('item_id')), // or use Model::findOrFail(1); if need to show delete button everywere
+			'producers' => Producer::readAllProducers(),
+			'pageTitle' => $this->definePageTitle(),
+		]);
+	}
+
+	private function formFields() {
+		$fields = Input::all();
+		unset($fields['subcategoryActive']);
+
+		if (!isset($fields['procurement'])) {
+			$fields['procurement'] = 0;
+		}
+		if (!isset($fields['special'])) {
+			$fields['special'] = 0;
+		}
+		if (!isset($fields['hit'])) {
+			$fields['hit'] = 0;
+		}
+
+		return $fields;
+
+	}
+
+	private function converPriceToEur($category, $price, $currency) {
+		$categories = en_categories();
+		if (in_array($category, $categories) and $currency  == 'РУБ') {
+			$result['currency'] = 'EUR';
+			$result['price'] = ceil($price/get_EUR_rate()*100)/100;
+		}
+
+		return $result;
+	}
+
+	//TODO:: refactor this function(works correctly, but looks bad)
+	private function checkPhotoType($photo, $old) {
+		if ($photo == 'no_photo.png') {
+			if ($old == 'no_photo.png') {
+				$type = 'no';
+			} else {
+				$type = 'deleted';
+			}
+		} else {
+			if ($photo == $old) {
+				$type = 'same';
+			} else {
+				if ($old != 'no_photo.png') {
+					$type = 'new_deleted';
+				} else {
+					$type = 'new';
+				}
+			}
+		}
+
+		return $type;
+	}
+
+	private function deletePhoto($photo) {
+		$filepath = HELP::$ITEM_PHOTO_DIR.DIRECTORY_SEPARATOR.$photo;
+		File::delete($filepath);
+
+		return 'no_photo.png';
+	}
+
+	private function uploadPhoto($photo) {
+		$temp = HELP::$ITEM_PHOTO_DIR.DIRECTORY_SEPARATOR.$photo;
+		$extension = File::extension($temp);
+		$filename = 'photo_'.time().'.'.$extension;
+		$new = HELP::$ITEM_PHOTO_DIR.DIRECTORY_SEPARATOR.$filename;
+		rename($temp, $new);
+
+		return $filename;
+	}
+
+	private function processPhoto($photo, $old) {
+		$type = $this->checkPhotoType($photo, $old);
+
+		if ($type === 'no') {
+
+			return 'no_photo.png';
+
+		} elseif ($type === 'deleted') {
+
+			return $this->deletePhoto($old);
+
+		} elseif ($type === 'same') {
+
+			return $old;
+
+		} elseif ($type === 'new_deleted') {
+			$this->deletePhoto($old);
+
+			return $this->uploadPhoto($photo);
+
+		} elseif ($type === 'new') {
+
+			return $this->uploadPhoto($photo);
+
+		}
+	}
+
+	private function error($message) {
+		return Redirect::back()->withInput()
+		               ->withErrors($message);
+	}
+
+	private function updateOrCreateItem($fields, $item_id) {
+		$fields['photo'] = $this->processPhoto($fields['photo'], $fields['old']);
+		unset($fields['old']);
+		unset($fields['category']);
+
+		return $item = Item::updateOrCreate(['item_id' =>  $item_id], $fields);
+	}
+
+	private function successMessage($item, $item_id) {
+		if ($item_id) {
+			$message = 'Товар '.$item->title.' изменен! <a href='.URL::to('/admin/change_item?item_id='.$item->item_id).' class="alert-link">Назад</a>';
+			return Redirect::back()->with('message', $message);
+		} else {
+			$message = 'Товар '.$item->title.' добавлен! <a href='.URL::to('/admin/change_item?item_id='.$item->item_id).' class="alert-link">Назад</a>';
+			return Redirect::back()->with('message', $message)->withInput();
+		}
+	}
+
+	private function createValidator($fields, $item_id) {
+		$rules = [
+			'code'	=> 'required|unique:items,code,'.$item_id.',item_id'
+		];
+
+		return  Validator::make($fields, $rules);
+	}
+
+	public function updateItem() {
+		$item_id = Input::get('item_id');
+		$fields = $this->formFields();
+		$eurPrice = $this->converPriceToEur($fields['category'], $fields['price'], $fields['currency']);
+		$fields['price'] = $eurPrice['price'];
+		$fields['currency'] = $eurPrice['currency'];
+
+		$validator = $this->createValidator($fields, $item_id);
+
+		if ($validator->fails()) {
+			$this->error('Товар с таким кодом уже существует. Код должен быть уникальным!');
+		} else {
+			$item = $this->updateOrCreateItem($fields, $item_id);
+			return $this->successMessage($item, $item_id);
+		}
+	}
+
+	public function deleteItem() {
+		$item = Item::find(Input::get('item_id'));
+
+		if ($item->photo != 'no_photo.png') {
+			$this->deletePhoto($item->photo);
+		}
+
+		$contains = Str::contains(URL::previous(), '/admin/change_item');
+		if ($contains) {
+			return HELP::__delete('Item', 'Товар %s удален!', 'title', '/admin/change_item');
+		} else {
+			return HELP::__delete('Item', 'Товар %s удален!', 'title', 'back');
+		}
+	}
+
+	public function ajaxItemImage() {
+		if (Input::hasFile('ajax_photo')) {
+			$file = Input::file('ajax_photo');
+			$destinationPath = HELP::$ITEM_PHOTO_DIR;
+			$extension = $file->getClientOriginalExtension();
+			// $temp_filename = $file->getClientOriginalName(); // full
+
+			$filename = 'temp.'.$extension;
+			$file->move($destinationPath, $filename);
+
+			$this->addWatermark($filename);
+		}
+
+		return Response::json($filename);
+	}
+
+	private function addWatermark($filename) {
+		$watermark_path = dir_path('icons').dir_sep().'watermark.png';
+		$watermark = Image::make($watermark_path);
+		$image = Image::make(dir_path('photos').dir_sep().$filename);
+
+		// resize watermark TODO::abstract this part?
+		$width = $image->width();
+		$height = $image->height();
+		$watermark->fit($width, $height);
+
+		$image->insert($watermark, 'center', 0, 0);
+		$image->save();
+	}
+
+	public function articles() {
+		return View::make('new_admin/articles')->with([
+			'env' 		=> 'articles',
+			'articles'	=> Article::readAllArticles(),
+			'pageTitle' => $this->definePageTitle(),
+		]);
+	}
+
+	public function ajaxDeleteArticle() {
+		$article = Article::find(Input::get('article_id'));
+
+		if ($article->photo != 'no_photo.png') {
+			$this->deletePhoto($article->photo);
+		}
+
+		$article->delete();
+
+		//TODO:: add message?
+		return Redirect::back();
+	}
+
+	public function changeArticle() {
+		return View::make('new_admin/change_article')->with([
+			'env' 		=> 'change_article',
+			'article'	=> Article::find(Input::get('article_id')),
+			'pageTitle' => $this->definePageTitle(),
+		]);
+	}
 
 
 }

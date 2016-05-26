@@ -120,10 +120,33 @@ Route::group(['prefix'=>'/admin', 'before'=>'auth2'], function() {
 	Route::get('/catalog', array('as' => 'catalog_admin', 'uses' => 'NewAdminController@catalog'));
 	// ITEM
 	Route::get('/{category}/{subcat}', array('as' => 'items_admin', 'uses' => 'NewAdminController@items'));
-	//		Route::get('/change_item', 'AdminController@change_item');
-	//		Route::post('/update_item', 'AdminController@update_item');
-	//		Route::post('/delete_item', 'AdminController@delete_item');
-	//		Route::post('/delete_item_from_pdf', 'PdfController@delete_item_from_pdf');
+	Route::get('/change_item', array('as' => 'items_admin_change', 'uses' => 'NewAdminController@changeItem'));
+	Route::post('/update_item', 'NewAdminController@updateItem');
+	Route::post('/delete_item', 'NewAdminController@deleteItem');
+	//Route::post('/delete_item_from_pdf', 'PdfController@delete_item_from_pdf');
+
+	// AJAX
+	Route::post('/ajax-change-subcategory', 'NewAdminController@changeSubcategory');
+	Route::post('/ajax-change-pdf', 'PdfController@ajax_change_pdf');
+	Route::post('/ajax-make-special', 'NewAdminController@setSpecial');
+	Route::post('/ajax-make-hit', 'NewAdminController@setHit');
+	Route::post('/ajax-set-procurement', 'NewAdminController@setProcurement');
+	Route::post('/ajax-delete-group', 'NewAdminController@deleteGroup');
+	Route::post('/ajax-delete-item', 'NewAdminController@ajaxDeleteItem');
+	Route::post('/ajax-get-subcategories', 'NewAdminController@getSubcategories');
+	Route::post('/ajax_item_image', 'NewAdminController@ajaxItemImage');
+
+	Route::post('/ajax-delete-article', 'NewAdminController@ajaxDeleteArticle');
+
+
+	// ARTICLE
+	Route::get('/articles', array('as' => 'articles_admin', 'uses' => 'NewAdminController@articles'));
+	Route::get('/change_article', array('as' => 'article_admin_change', 'uses' => 'NewAdminController@changeArticle'));
+	Route::post('/update_article', array('as' => 'article_admin_change', 'uses' => 'NewAdminController@updateArticle'));
+	//	Route::post('/delete_article', 'AdminController@delete_article');
+
+
+
 
 	//	Route::post('/set_discount', 'AdminController@set_discount');
 	//	Route::post('/set_eur_rate', 'AdminController@set_eur_rate');

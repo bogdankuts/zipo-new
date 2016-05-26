@@ -42,7 +42,7 @@ function get_EUR_rate() {
 		$EUR = Cache::get('EUR_rate');
 		return floatval(str_replace(',', '.', $EUR));
 	} else {
-		$rate = Cache::remember('EUR_rate', minutes_left(), function() {
+		$rate = Cache::remember('EUR_rate', 600, function() {
 			$xml = file_get_contents('http://www.cbr.ru/scripts/XML_daily.asp');
 			$xml = simplexml_load_string($xml);
 			$json = json_encode($xml);

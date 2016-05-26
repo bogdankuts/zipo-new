@@ -21,8 +21,7 @@
 	{{--CUSTOM STYLES--}}
 	{{ HTML::style('css/style.css') }}
 	{{ HTML::style('css/new_admin/style.css') }}
-
-    {{--{{ HTML::script('ckeditor/ckeditor.js') }}--}}
+    {{ HTML::script('ckeditor/ckeditor.js') }}
     @yield('css')
 </head>
 
@@ -37,17 +36,19 @@
         </main>
         @yield('footer')
     </div>
-    <script>
-        {{--@include('partials/js_globals')--}}
-        @yield('js')
-    </script>
+
+	@yield('modal-change-subcat')
+	@yield('modal-add-to-pdf')
+
+	<script>
+		{{--@include('partials/js_globals')--}}
+		@yield('js')
+	</script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    {{ HTML::script('js/new_admin.js') }}
+	{{ HTML::script('js/new_admin.js') }}
 	{{ HTML::script('js/common.js') }}
 	{{ HTML::script('js/admin.js') }}
 	@yield('head_js')
-
-	@yield('modal-change-subcat')
-
+	@yield('specific_page_js')
 </body>
 </html>

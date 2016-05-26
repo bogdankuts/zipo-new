@@ -3,6 +3,7 @@
 @extends('new_admin/partials/drawer')
 @extends('new_admin/partials/footer')
 @extends('new_admin/partials/modals-new_item_subcat')
+@extends('new_admin/partials/modals-add_to_pdf')
 
 @section('body')
 	@include('partials/flash_messages')
@@ -27,6 +28,8 @@
 				@endif
 			@endif
 		</h2>
+		<p class="hidden" id="categoryActive">{{$current->category}}</p>
+		<p class="hidden" id="subcategoryActive">{{$current->subcat_id}}</p>
 		<div class="admin_main_content admin_main_content_items">
 			@if ($env != 'catalog_admin' and $env!= 'byproducer' )
 				<hr class="main_hr">
@@ -58,7 +61,7 @@
 										Изменить
 									</a>
 								</li>
-								{{ Form::open(array('url' => "/admin/delete_item?item_id=$item->item_id", 'method' => 'POST', 'class'=>'admin_producer_one_form')) }}
+								{{ Form::open(array('url' => "/admin/ajax-delete-item?item_id=$item->item_id", 'method' => 'POST', 'class'=>'admin_producer_one_form')) }}
 									<li class="mdl-menu__item delete_items_group_icon">
 										Удалить
 									</li>
@@ -126,27 +129,21 @@
 			<div class="admin_items_footer">
 				<div class="change_items_buttons_first">
 					<!-- Accent-colored raised button with ripple -->
-					<a class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored ajax_change_state spec_btn_adm" data-url='/admin/ajax_set_special'>Добавить в спецпредложения</a>
-					<a class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored ajax_change_state" data-url='/admin/ajax_set_hit'>Сделать хитом продаж</a>
-					<a class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored ajax_change_state proc_btn_adm" data-url='/admin/ajax_set_procurement'>Изменить наличие</a>
+					<a class="admin_footer_btn mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored ajax_change_state" data-url='/admin/ajax-make-special'>Добавить в спецпредложения</a>
+					<a class="admin_footer_btn mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored ajax_change_state" data-url='/admin/ajax-make-hit'>Сделать хитом продаж</a>
+					<a class="admin_footer_btn mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored ajax_change_state" data-url='/admin/ajax-set-procurement'>Изменить наличие</a>
 				</div>
 				<div class="change_items_buttons_second">
-					<a class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored ad_it_ch_c mfp-zoom-out" data-effect="mfp-zoom-out" data-toggle="modal" data-target="#changeSubcat">Изменить категорию/подкатегорию</a>
-					<a class="btn add_to_pdf mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored ad_pdf_p mfp-zoom-out" data-effect="mfp-zoom-out">Добавить/удалить ссылки к PDF</a>
-					<div class="admin_change_subcategory_div admin_itms_pdf_div mfp-hide mfp-zoom-out" data-effect="mfp-zoom-out">
-						<div class="ad_pdf_pop_up">
-							<p class="admin_add_subcategory_title">Редактирование/добавление деталировки</p>
-							<div class="change_block admin_select_category_div">
-								{{ Form::label('pdf', 'PDF', ['class'=>'admin_uni_label admin_select_category_label']) }}
-								{{ Form::select('pdf', $HELP::createOptions($pdfs, 'pdf_id', 'good'), null, ['class'=>'form-control admin_select_category_select admin_select_pdf', 'required', 'form' => 'none']) }}
-							</div>
-							<a class="change_item_pdf mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored aadb admin_uni_button ">Сохранить</a>
-						</div>
-					</div>
-					<a class="btn delete_group_button mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">Удалить товары</a>
+					<a class=" admin_footer_btn mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" data-toggle="modal" data-target="#changeSubcat">Изменить категорию/подкатегорию</a>
+					<a class=" admin_footer_btn mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored add_to_pdf" data-toggle="modal" data-target="#addToPdf">Добавить/удалить ссылки к PDF</a>
+					<a class=" admin_footer_btn mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored delete_group_button">Удалить товары</a>
 				</div>
 			</div>
 		</div>
 	</div>
 
+@stop
+
+@section('specific_page_js')
+	{{ HTML::script('js/admin/group_editing.js') }}
 @stop

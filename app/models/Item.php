@@ -94,7 +94,7 @@ class Item extends BaseModel {
 		$items = Item::__items();
 		$items = $items->where('items.subcat_id', $subcat_id);
 		$items = $items->orderBy($sort, $order);
-		$items = $items->paginate('10000');
+		$items = $items->get();
 
 		return $items;
 	}
