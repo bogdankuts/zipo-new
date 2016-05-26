@@ -136,14 +136,20 @@ Route::group(['prefix'=>'/admin', 'before'=>'auth2'], function() {
 	Route::post('/ajax-get-subcategories', 'NewAdminController@getSubcategories');
 	Route::post('/ajax_item_image', 'NewAdminController@ajaxItemImage');
 
-	Route::post('/ajax-delete-article', 'NewAdminController@ajaxDeleteArticle');
 
 
 	// ARTICLE
 	Route::get('/articles', array('as' => 'articles_admin', 'uses' => 'NewAdminController@articles'));
 	Route::get('/change_article', array('as' => 'article_admin_change', 'uses' => 'NewAdminController@changeArticle'));
 	Route::post('/update_article', array('as' => 'article_admin_change', 'uses' => 'NewAdminController@updateArticle'));
-	//	Route::post('/delete_article', 'AdminController@delete_article');
+	Route::post('/delete_article', 'NewAdminController@deleteArticle');
+	Route::post('/ajax-delete-article', 'NewAdminController@ajaxDeleteArticle');
+
+	// PRODUCER
+	//	Route::get('/producers', 'AdminController@producers');
+	//	Route::get('/producers_temp', 'AdminController@producer_update_img');
+	//	Route::post('/update_producer', 'AdminController@update_producer');
+	//	Route::post('/delete_producer', 'AdminController@delete_producer');
 
 
 

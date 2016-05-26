@@ -368,6 +368,14 @@ class NewAdminController extends BaseController {
 
 	}
 
+	private function formArticleFields() {
+		$fields = Input::all();
+		$today = date("Y-m-d", time());
+		$fields['time'] = $today;
+
+		return $fields;
+	}
+
 	private function converPriceToEur($category, $price, $currency) {
 		$categories = en_categories();
 		if (in_array($category, $categories) and $currency  == 'РУБ') {
@@ -456,6 +464,13 @@ class NewAdminController extends BaseController {
 		unset($fields['category']);
 
 		return $item = Item::updateOrCreate(['item_id' =>  $item_id], $fields);
+	}
+
+	private function updateOrCreateArticle($fields, $article_id) {
+		$fields['photo'] = $this->processPhoto($fields['photo'], $fields['old']);
+		unset($fields['old']);
+
+		return $article = Article::updateOrCreate(['article_id' => $article_id], $fields);
 	}
 
 	private function successMessage($item, $item_id) {
@@ -566,6 +581,38 @@ class NewAdminController extends BaseController {
 			'pageTitle' => $this->definePageTitle(),
 		]);
 	}
+
+	public function updateArticle() {
+		$article_id = Input::get('article_id');
+		$fields = $this->formArticleFields();
+
+		$article = $this->updateOrCreateArticle($fields, $article_id);
+
+		if ($article_id) {
+			$message = 'Новость '.$article->title.' изменена! <a href='.URL::to('/admin/change_article?article_id='.$article->article_id).' class="alert-link">Назад</a>';
+			return Redirect::to('/admin/change_article')->with('message', $message);
+		} else {
+			$message = 'Новость '.$article->title.' добавлена! <a href='.URL::to('/admin/change_article?article_id='.$article->article_id).' class="alert-link">Назад</a>';
+			return Redirect::back()->with('message', $message);
+		}
+	}
+
+	public function deleteArticle() {
+		$article = Article::find(Input::get('article_id'));
+
+		if ($article->photo != 'no_photo.png') {
+			$this->deletePhoto($article->photo);
+		}
+
+		$contains = Str::contains(URL::previous(), '/admin/change_article');
+		if ($contains) {
+			return HELP::__delete('Article', 'Новость %s удалена!', 'title', '/admin/change_article');
+		} else {
+			return HELP::__delete('Article', 'Новость %s удалена!', 'title', 'back');
+		}
+	}
+
+
 
 
 }

@@ -1,23 +1,4 @@
-//CKEDITOR EMBED
-if ($('#ckeditor').length) {
-	CKEDITOR.replace('ckeditor', {
-		filebrowserBrowseUrl 	   : '../kcfinder/browse.php?opener=ckeditor&type=files',
-		filebrowserImageBrowseUrl  : '../kcfinder/browse.php?opener=ckeditor&type=images',
-		filebrowserFlashBrowseUrl  : '../kcfinder/browse.php?opener=ckeditor&type=flash',
-		filebrowserUploadUrl  	   : '../kcfinder/upload.php?opener=ckeditor&type=files',
-		filebrowserImageUploadUrl  : '../kcfinder/upload.php?opener=ckeditor&type=images',
-		filebrowserFlashUploadUrl  : '../kcfinder/upload.php?opener=ckeditor&type=flash',
-		// uiColor: '#702329'
-		// toolbar : [
-		// ['ajaxsave'],
-		// ['Bold', 'Italic', 'Underline', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink' ],
-		// ['Cut','Copy','Paste','PasteText'],
-		// ['Undo','Redo','-','RemoveFormat'],
-		// ['TextColor','BGColor'],
-		// ['Maximize', 'Image']
-		// ],
-	});
-}
+
 
 
 ////RUN SUBCATEGORIES FROM SELECT
@@ -145,15 +126,15 @@ $('.del_pdf').on('click', function(evt) {
 //});
 
 
-// CLEAR ARTICLE BUTTON
-$('.article_clean').on('click', function(e) {
-	e.preventDefault();
-	var $form = $('.article_update_form');
-	$form.find('input[name="title"]').val("");
-	$form.find('input[name="weight"]').val("");
-	// $form.find('textarea[name="body"]').val("");
-	CKEDITOR.instances.editor1.setData('');
-});
+//// CLEAR ARTICLE BUTTON
+//$('.article_clean').on('click', function(e) {
+//	e.preventDefault();
+//	var $form = $('.article_update_form');
+//	$form.find('input[name="title"]').val("");
+//	$form.find('input[name="weight"]').val("");
+//	// $form.find('textarea[name="body"]').val("");
+//	CKEDITOR.instances.editor1.setData('');
+//});
 
 
 //CHANGE SELECT DEPENDING ON CATEGORY

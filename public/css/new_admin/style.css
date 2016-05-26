@@ -297,6 +297,9 @@ footer {
   width: 100%;
   margin-top: 20px; }
 
+.admin_items_buttons a.mdl-menu__item:hover {
+  color: inherit; }
+
 .admin_main_content--change-item {
   padding: 20px; }
 
@@ -416,6 +419,8 @@ footer {
   padding-right: 7px;
   padding-left: 7px;
   float: left; }
+  .admin_articles_one a:hover {
+    color: inherit; }
   .admin_articles_one .article_more {
     position: relative;
     width: 100%;
@@ -459,5 +464,48 @@ footer {
     color: black;
     text-decoration: none;
     z-index: 9999; }
+
+.admin_main_content--change-article form {
+  width: 100%; }
+.admin_main_content--change-article .admin_uni_label {
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -.04em; }
+  .admin_main_content--change-article .admin_uni_label--subheading {
+    font-size: 18px;
+    width: 50%; }
+.admin_main_content--change-article .change_article_title_block {
+  width: 100%; }
+  .admin_main_content--change-article .change_article_title_block .mdl-textfield {
+    width: 100%; }
+.admin_main_content--change-article .change_article_descript_block {
+  width: 50%;
+  float: left; }
+  .admin_main_content--change-article .change_article_descript_block .mdl-textfield {
+    width: 560px;
+    padding: 0; }
+    .admin_main_content--change-article .change_article_descript_block .mdl-textfield #cke_ckeditor {
+      width: 546px; }
+.admin_main_content--change-article .change_article_weight_div {
+  width: 50%;
+  float: right; }
+  .admin_main_content--change-article .change_article_weight_div .mdl-textfield {
+    width: 100%; }
+.admin_main_content--change-article .img_preview {
+  min-height: 140px;
+  max-height: 140px;
+  margin-bottom: 20px; }
+  .admin_main_content--change-article .img_preview .items_item_img {
+    max-height: 140px; }
+.admin_main_content--change-article .back {
+  float: left; }
+.admin_main_content--change-article .save {
+  float: right;
+  margin-left: 20px; }
+.admin_main_content--change-article .btn_del {
+  float: right;
+  margin-top: 20px;
+  margin-right: 141px; }
 
 /*# sourceMappingURL=style.css.map */

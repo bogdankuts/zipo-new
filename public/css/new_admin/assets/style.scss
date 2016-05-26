@@ -292,112 +292,6 @@ footer {
 	font-size: 18px;
 	font-weight: bold;
 }
-//.change_item_title_block {
-//	margin-bottom: 16px;
-//}
-//.left_block {
-//	float: left;
-//	width: 430px;
-//}
-//.right_block {
-//	float: right;
-//	width: 430px;
-//}
-//.change_block {
-//	display: inline-block;
-//}
-//.change_item_subcat_div {
-//	display: inherit;
-//	margin-top: 16px;
-//}
-//.change_item_cur_div {
-//	float: right;
-//}
-//.title_input {
-//	width: 758px;
-//	margin-left: 46px;
-//}
-//.code_input {
-//	width: 280px;
-//	margin-left: 56px;
-//}
-//.price_input {
-//	width: 165px;
-//	margin-left: 25px;
-//}
-//.currency_input {
-//	width: 80px;
-//	margin-left: 25px;
-//}
-//.change_item_category_div {
-//	margin-top: 16px;
-//	margin-bottom: 16px;
-//}
-//.change_item_procurement_div {
-//	margin-top: 16px;
-//}
-//.proc_label {
-//	margin-right: 91px;
-//}
-//.category_label {
-//	margin-right: 42px;
-//}
-//.subcat_label {
-//	margin-right: 52px;
-//}
-//.subcat_input {
-//	width: 274px;
-//}
-//.producer_label {
-//	margin-right: 5px;
-//}
-//.descr_label {
-//	vertical-align: top;
-//	margin-top: 15px;
-//	margin-right: 9px;
-//}
-//.descr_input {
-//	width: 756px;
-//	margin-left: 35px;
-//	margin-top: 20px;
-//}
-//.make_spec_block, .make_hit_block {
-//	margin-top: 25px;
-//}
-//.make_hit_block {
-//	margin-bottom: 25px;
-//}
-//input[name="special"] {
-//	margin-left: 65px;
-//}
-//input[name="hit"] {
-//	margin-left: 116px;
-//}
-//.img_preview {
-//	margin-top: 0px;
-//	max-width: 242px;
-//	position: relative;
-//}
-//.change_item_img {
-//	display: inline-block;
-//	margin-left: 100px;
-//}
-//.items_item_img {
-//	float: none;
-//	margin-bottom: 15px;
-//}
-//.change_item_buttons {
-//	display: inline-block;
-//	margin-left: 20px;
-//}
-//.img_preview i {
-//	position: absolute;
-//	top: 0px;
-//	right: 0px;
-//	margin: 5px;
-//	font-size: 20px;
-//	color: #9dcb20;
-//}
 /*FOOTER_FIXED*/
 .admin_items_footer_main {
 	box-shadow: 2px 3px 7px #757171;
@@ -461,6 +355,13 @@ footer {
 }
 
 //ITEM CHANGE
+.admin_items_buttons {
+	a.mdl-menu__item {
+		&:hover {
+			color: inherit;
+		}
+	}
+}
 .admin_main_content--change-item {
 	padding: 20px;
 }
@@ -486,9 +387,7 @@ footer {
 		display: block;
 		overflow: hidden;
 	}
-	.mdl-tooltip {
 
-	}
 
 }
 .change_item_title_block {
@@ -583,6 +482,7 @@ footer {
 	margin-right: 145px;
 }
 
+
 //ARTICLES
 .admin_main_content--change-article {
 	padding: 20px;
@@ -599,11 +499,15 @@ footer {
 	padding-right: 7px;
 	padding-left: 7px;
 	float: left;
+	a {
+		&:hover {
+			color: inherit;
+		}
+	}
 	.article_more {
 		position: relative;
 		width: 100%;
 		float: left;
-		//overflow: hidden;
 	}
 	.img_block {
 		width: 100%;
@@ -654,7 +558,66 @@ footer {
 		color: black;
 		text-decoration: none;
 		z-index: 9999;
+	}
 
+}
+.admin_main_content--change-article {
+	form {
+		width: 100%;
+	}
+	.admin_uni_label {
+		font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+		font-weight: 300;
+		line-height: 1;
+		letter-spacing: -.04em;
+		&--subheading {
+			font-size: 18px;
+			width: 50%;
+		}
+	}
+	.change_article_title_block {
+		width: 100%;
+		.mdl-textfield {
+			width: 100%;
+		}
+	}
+	.change_article_descript_block {
+		width: 50%;
+		float: left;
+		.mdl-textfield {
+			width: 560px;
+			padding: 0;
+			#cke_ckeditor {
+				width: 546px;
+			}
+		}
+	}
+	.change_article_weight_div {
+		width: 50%;
+		float: right;
+		.mdl-textfield {
+			width: 100%;
+		}
+	}
+	.img_preview {
+		min-height: 140px;
+		max-height: 140px;
+		.items_item_img {
+			max-height: 140px;
+		}
+		margin-bottom: 20px;
+	}
+	.back {
+		float: left;
+	}
+	.save {
+		float: right;
+		margin-left: 20px;
+	}
+	.btn_del {
+		float: right;
+		margin-top: 20px;
+		margin-right: 141px;
 	}
 }
 
