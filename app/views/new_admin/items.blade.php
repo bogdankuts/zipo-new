@@ -56,11 +56,11 @@
 								<i class="material-icons">more_vert</i>
 							</button>
 							<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="{{$item->item_id}}-menu-trigger">
-								<li class="mdl-menu__item">
-									<a href='{{URL::to("admin/change_item?item_id=$item->item_id")}}' class="">
+								{{--<li class="mdl-menu__item">--}}
+									<a href='{{URL::to("admin/change_item?item_id=$item->item_id")}}' class="mdl-menu__item">
 										Изменить
 									</a>
-								</li>
+								{{--</li>--}}
 								{{ Form::open(array('url' => "/admin/ajax-delete-item?item_id=$item->item_id", 'method' => 'POST', 'class'=>'admin_producer_one_form')) }}
 									<li class="mdl-menu__item delete_items_group_icon">
 										Удалить
