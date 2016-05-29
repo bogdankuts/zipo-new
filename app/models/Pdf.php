@@ -61,6 +61,10 @@ class Pdf extends BaseModel {
     	return $items;
     }
 
+	public static function deleteProducerFromPdfs($producer_id) {
+		Pdf::where('producer_id', $producer_id)->update(['producer_id' => 0]);
+	}
+
 	// public function setGoodAttribute($value) {
 	// 	$this->attributes['good'] = trim($value);
 	// }

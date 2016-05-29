@@ -34,7 +34,7 @@
                 @yield('body')
             </div>
         </main>
-        @yield('footer')
+{{--        @yield('footer')--}}
     </div>
 
 	@yield('modal-change-subcat')

@@ -96,4 +96,8 @@ class Producer extends BaseModel {
 		$producers = $producers->get();
 		return $producers;
 	}
+
+	public static function deleteProducerFromItems($producer_id) {
+		Item::where('producer_id', $producer_id)->update(['producer_id' => 0]);
+	}
 }

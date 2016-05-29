@@ -29,6 +29,10 @@ class NewAdminController extends BaseController {
 			return $title = 'Статьи';
 		} elseif ($route == 'article_admin_change') {
 			return $title = 'Добавление/Изменение статьи';
+		} elseif ($route == 'admin_producer') {
+			return $title = 'Производители';
+		} elseif ($route == 'admin_producer_change') {
+			return $title = 'Добавление/Изменение производителя';
 		}
 	}
 
@@ -376,7 +380,7 @@ class NewAdminController extends BaseController {
 		return $fields;
 	}
 
-	private function converPriceToEur($category, $price, $currency) {
+	private function convertPriceToEur($category, $price, $currency) {
 		$categories = en_categories();
 		if (in_array($category, $categories) and $currency  == 'РУБ') {
 			$result['currency'] = 'EUR';
@@ -473,6 +477,15 @@ class NewAdminController extends BaseController {
 		return $article = Article::updateOrCreate(['article_id' => $article_id], $fields);
 	}
 
+	private function updateOrCreateProducer($fields, $producer_id) {
+		$fields['photo'] = $this->processPhoto($fields['photo'], $fields['old']);
+		unset($fields['old']);
+		$fields['producer_photo'] = $fields['photo'];
+		unset($fields['photo']);
+
+		return $producer = Producer::updateOrCreate(['producer_id' => $producer_id], $fields);
+	}
+
 	private function successMessage($item, $item_id) {
 		if ($item_id) {
 			$message = 'Товар '.$item->title.' изменен! <a href='.URL::to('/admin/change_item?item_id='.$item->item_id).' class="alert-link">Назад</a>';
@@ -494,7 +507,7 @@ class NewAdminController extends BaseController {
 	public function updateItem() {
 		$item_id = Input::get('item_id');
 		$fields = $this->formFields();
-		$eurPrice = $this->converPriceToEur($fields['category'], $fields['price'], $fields['currency']);
+		$eurPrice = $this->convertPriceToEur($fields['category'], $fields['price'], $fields['currency']);
 		$fields['price'] = $eurPrice['price'];
 		$fields['currency'] = $eurPrice['currency'];
 
@@ -611,6 +624,75 @@ class NewAdminController extends BaseController {
 			return HELP::__delete('Article', 'Новость %s удалена!', 'title', 'back');
 		}
 	}
+
+	public function producers() {
+		return View::make('new_admin/producers')->with([
+			'env' 		=> 'producers',
+			'producers' => Producer::readAllProducers(),
+			'pageTitle' => $this->definePageTitle(),
+		]);
+	}
+
+	public function ajaxDeleteProducer() {
+		$producer_id = Input::get('producer_id');
+		$producer = Producer::find($producer_id);
+
+		Pdf::deleteProducerFromPdfs($producer_id);
+		Producer::deleteProducerFromItems($producer_id);
+
+		if ($producer->producer_photo != 'no_photo.png') {
+			$this->deletePhoto($producer->producer_photo);
+		}
+
+		$producer->delete();
+
+		//TODO:: add message?
+		return Redirect::back();
+	}
+
+	public function changeProducer() {
+		return View::make('new_admin/change_producer')->with([
+			'env' 		=> 'change_producer',
+			'producer'	=> Producer::find(Input::get('producer_id')),
+			'pageTitle' => $this->definePageTitle(),
+		]);
+	}
+
+	public function updateProducer() {
+		$producer_id = Input::get('producer_id');
+		$fields = Input::all();
+
+		$producer = $this->updateOrCreateProducer($fields, $producer_id);
+
+		if ($producer_id) {
+			$message = 'Производитель '.$producer->producer.' изменен! <a href='.URL::to('/admin/change_producer?producer_id='.$producer->producer_id).' class="alert-link">Назад</a>';
+			return Redirect::to('/admin/change_producer')->with('message', $message);
+		} else {
+			$message = 'Производитель '.$producer->producer.' добавлен! <a href='.URL::to('/admin/change_producer?producer_id='.$producer->producer_id).' class="alert-link">Назад</a>';
+			return Redirect::back()->with('message', $message);
+		}
+	}
+
+	public function deleteProducer() {
+		$producer_id = Input::get('producer_id');
+		$producer = Producer::find($producer_id);
+
+		Pdf::deleteProducerFromPdfs($producer_id);
+		Producer::deleteProducerFromItems($producer_id);
+
+		if ($producer->producer_photo != 'no_photo.png') {
+			$this->deletePhoto($producer->producer_photo);
+		}
+
+		$contains = Str::contains(URL::previous(), '/admin/change_producer');
+		if ($contains) {
+			return HELP::__delete('Producer', 'Производитель %s удален!', 'producer', '/admin/change_producer');
+		} else {
+			return HELP::__delete('Producer', 'Производитель %s удален!', 'producer', 'back');
+		}
+	}
+
+
 
 
 

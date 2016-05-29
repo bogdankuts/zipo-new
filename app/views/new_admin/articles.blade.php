@@ -48,7 +48,16 @@
 				@endif
 			</div>
 		@endforeach
+		<div class="add_btn" id="add_btn">
+			<a href="/admin/change_article" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+				<i class="material-icons">add</i>
+			</a>
+		</div>
+		<div class="mdl-tooltip mdl-tooltip--top" for="add_btn">
+			Добавить новость
+		</div>
 	</div>
+
 @stop
 @section('specific_page_js')
 	{{ HTML::script('js/admin/articles.js') }}

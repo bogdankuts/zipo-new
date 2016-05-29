@@ -123,7 +123,7 @@ Route::group(['prefix'=>'/admin', 'before'=>'auth2'], function() {
 	Route::get('/change_item', array('as' => 'items_admin_change', 'uses' => 'NewAdminController@changeItem'));
 	Route::post('/update_item', 'NewAdminController@updateItem');
 	Route::post('/delete_item', 'NewAdminController@deleteItem');
-	//Route::post('/delete_item_from_pdf', 'PdfController@delete_item_from_pdf');
+	Route::post('/delete_item_from_pdf', 'PdfController@delete_item_from_pdf');
 
 	// AJAX
 	Route::post('/ajax-change-subcategory', 'NewAdminController@changeSubcategory');
@@ -146,10 +146,11 @@ Route::group(['prefix'=>'/admin', 'before'=>'auth2'], function() {
 	Route::post('/ajax-delete-article', 'NewAdminController@ajaxDeleteArticle');
 
 	// PRODUCER
-	//	Route::get('/producers', 'AdminController@producers');
-	//	Route::get('/producers_temp', 'AdminController@producer_update_img');
-	//	Route::post('/update_producer', 'AdminController@update_producer');
-	//	Route::post('/delete_producer', 'AdminController@delete_producer');
+	Route::get('/producers', array('as' => 'admin_producer', 'uses' => 'NewAdminController@producers'));
+	Route::get('/change_producer', array('as' => 'admin_producer_change', 'uses' => 'NewAdminController@changeProducer'));
+	Route::post('/update_producer', 'NewAdminController@updateProducer');
+	Route::post('/ajax-delete-producer', 'NewAdminController@ajaxDeleteProducer');
+	Route::post('/delete_producer', 'NewAdminController@deleteProducer');
 
 
 

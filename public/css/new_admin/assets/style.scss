@@ -484,9 +484,6 @@ footer {
 
 
 //ARTICLES
-.admin_main_content--change-article {
-	padding: 20px;
-}
 .admin_articles_one {
 	width: 250px;
 	height: 315px;
@@ -562,6 +559,7 @@ footer {
 
 }
 .admin_main_content--change-article {
+	padding: 20px;
 	form {
 		width: 100%;
 	}
@@ -618,6 +616,63 @@ footer {
 		float: right;
 		margin-top: 20px;
 		margin-right: 141px;
+	}
+}
+
+//PRODUCERS
+.admin_main_content--producers {
+	padding: 20px;
+	position: relative;
+	form {
+		width: 100%;
+		.change_item_title_block {
+			width: 100%;
+			.mdl-textfield {
+				width: 100%;
+			}
+		}
+	}
+	.admin_uni_label {
+		font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+		font-weight: 300;
+		line-height: 1;
+		letter-spacing: -.04em;
+		&--subheading {
+			font-size: 18px;
+			width: 50%;
+		}
+	}
+
+}
+.add_btn {
+	position: fixed;
+	bottom: 50px;
+	right: 2%;
+	a {
+		box-shadow: 0 0 4px rgba(0,0,0,.14),0 4px 8px rgba(0,0,0,.28);
+	}
+	&:hover {
+		a {
+			box-shadow: 0 0 6px rgba(0,0,0,.16),0 6px 12px rgba(0,0,0,.32)
+		}
+	}
+}
+.producers_list {
+	float: left;
+	width: 25%;
+	.admin_producer_one {
+		.admin_producer_one_form {
+			float: right;
+			width: auto;
+			i {
+				&:hover {
+					cursor: pointer;
+				}
+			}
+		}
+		.change {
+			float: right;
+		}
 	}
 }
 

@@ -13,9 +13,13 @@
             <a class="mdl-navigation__link @if ( $env == 'change_article') active_nav @endif" href="/admin/change_article">Добавить новость</a>
             <div class="mdl-navigation__devider"></div>
 
-            <a class="mdl-navigation__link" href="">Производители</a>
-            <a class="mdl-navigation__link" href="">Добавить прозводителя</a>
+            <a class="mdl-navigation__link @if ( $env == 'articles') producers @endif" href="/admin/producers">Производители</a>
+            <a class="mdl-navigation__link @if ( $env == 'change_producer') active_nav @endif" href="/admin/change_producer">Добавить прозводителя</a>
             <div class="mdl-navigation__devider"></div>
+
+			<a class="mdl-navigation__link" href="">Подкатегории</a>
+			<a class="mdl-navigation__link" href="">Добавить подкатегорию</a>
+			<div class="mdl-navigation__devider"></div>
 
             <a class="mdl-navigation__link" href="">Заказы</a>
             <a class="mdl-navigation__link" href="">Клиенты</a>
