@@ -171,6 +171,11 @@ Route::group(['prefix'=>'/admin', 'before'=>'auth2'], function() {
 
 	//CLIENTS
 	Route::get('/clients', array('as' => 'admin_clients', 'uses' => 'NewAdminController@clients'));
+	Route::get('/detailed_client', array('as' => 'admin_client', 'uses' => 'NewAdminController@client'));
+
+	//USERS
+	Route::get('/users', array('as' => 'admin_users', 'uses' => 'NewAdminController@users'));
+	Route::get('/detailed_user', array('as' => 'admin_user', 'uses' => 'NewAdminController@user'));
 
 
 

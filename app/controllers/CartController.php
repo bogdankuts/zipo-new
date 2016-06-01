@@ -85,6 +85,7 @@ class CartController extends BaseController {
 		$clientData['phone'] = $data['phone'];
 		$clientData['company'] = $data['company'];
 		$clientData['form_of_business'] = $data['form'];
+		$clientData['registered'] = $data['registered'];
 		//$clientData['added_at'] = date('Y-m-d', time());
 
 		$match = [];

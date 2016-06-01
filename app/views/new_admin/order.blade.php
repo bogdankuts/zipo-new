@@ -95,10 +95,10 @@
 				@if($order->number_of_order <= 1)
 					<p class="heading clients_order">Это первый заказ клиента!</p>
 				@else
-					<p class="heading clients_order">Это {{$order->number_of_order}} заказ клиента!</p>
+					<p class="heading clients_order">Этот клиент сделал {{$order->number_of_order}} заказов(а)!</p>
 				@endif
 				<div class="client_more">
-					<a href="/admin/detailed_client?client_id={{$order->client_id}}" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect client_less" id="less_{{$order->order_id}}" data-target="{{$order->order_id}}">
+					<a href="/admin/detailed_client?client_id={{$order->client_id}}" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
 						Подробнее о клиенте
 					</a>
 				</div>

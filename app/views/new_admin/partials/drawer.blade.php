@@ -21,8 +21,8 @@
 			<div class="mdl-navigation__devider"></div>
 
             <a class="mdl-navigation__link @if ( $env == 'orders' || $env == 'order') active_nav @endif" href="/admin/orders">Заказы</a>
-            <a class="mdl-navigation__link" href="">Клиенты</a>
-            <a class="mdl-navigation__link" href="">Пользователи</a>
+            <a class="mdl-navigation__link @if ( $env == 'clients' || $env == 'client') active_nav @endif" href="/admin/clients">Клиенты</a>
+            <a class="mdl-navigation__link @if ( $env == 'users' || $env == 'user') active_nav @endif" href="/admin/users">Пользователи</a>
             <div class="mdl-navigation__devider"></div>
 
             <a class="mdl-navigation__link" href="">Деталировки</a>

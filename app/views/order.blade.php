@@ -121,6 +121,11 @@
                 {{ Form::label('comment', 'Комментарий: ', ['class'=>'main_label']) }}
                 {{ Form::textarea('comment', null, ['class'=>'change_input change_input_code form-control',]) }}
             </div>
+				@if(Auth::user()->check())
+					{{ Form::hidden('registered', Auth::user()->get()->user_id) }}
+				@else
+					{{ Form::hidden('registered', null) }}
+				@endif
             </div>
             {{Form::submit('Отправить', ['class'=>'submit_field save_button btn'])}}
         {{Form::close()}}

@@ -63,6 +63,15 @@ class NewAdminController extends BaseController {
 			case 'admin_clients':
 				$title = "Клиенты";
 				break;
+			case 'admin_client':
+				$title = "Клиент";
+				break;
+			case 'admin_users':
+				$title = "Позьзователи";
+				break;
+			case 'admin_user':
+				$title = "Позьзователь";
+				break;
 		}
 
 		return $title;
@@ -854,10 +863,58 @@ class NewAdminController extends BaseController {
 	}
 
 	public function clients() {
+		$clients = new Client;
+		$clients = $clients->getAllClients();
 
 		return View::make('new_admin/clients')->with([
 			'env' 		    => 'clients',
-			'clients'       => Client::all(),
+			'clients'       => $clients,
+			'pageTitle'     => $this->definePageTitle(),
+		]);
+	}
+
+	public function client() {
+		$client = new Client;
+		$client = $client->getDetailedClient(Input::get('client_id'));
+		$client_orders = new Order;
+		$client_orders = $client_orders->getAllOrdersByClient(Input::get('client_id'));
+
+		return View::make('new_admin/client')->with([
+			'env' 		    => 'client',
+			'client'        => $client,
+			'orders'        => $client_orders,
+			'pageTitle'     => $this->definePageTitle(),
+		]);
+	}
+
+	public function users() {
+		$users = new User;
+		$users = $users->getAllUsers();
+
+		return View::make('new_admin/users')->with([
+			'env' 		    => 'users',
+			'users'       => $users,
+			'pageTitle'     => $this->definePageTitle(),
+		]);
+	}
+
+	public function user() {
+		$user = new User;
+		$user = $user->getDetailedUser(Input::get('user_id'));
+		$client = Client::where('registered', '=', Input::get('user_id'));
+
+		if($client->first()) {
+			$client_orders = new Order;
+			$client_orders = $client_orders->getAllOrdersByClient($client->first()->client_id);
+		} else {
+			$client_orders = [];
+		}
+
+
+		return View::make('new_admin/user')->with([
+			'env' 		    => 'user',
+			'user'          => $user,
+			'orders'        => $client_orders,
 			'pageTitle'     => $this->definePageTitle(),
 		]);
 	}

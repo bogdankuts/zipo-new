@@ -116,11 +116,30 @@ class Order extends BaseModel {
 			$order['sum'] = $this->getOrderSum($order);
 			$this->normalizeDelivery($order);
 			$this->normalizeFormOfBusiness($order);
-
 		}
 
 		return $orders;
 	}
+
+	public function getAllOrdersByClient($client_id) {
+		$orders = new Order;
+		$orders = $orders
+			->join('clients', 'clients.client_id', '=', 'orders.client_id')
+			->join('states', 'states.state_id' , '=', 'orders.state')
+			->where('orders.client_id', '=', $client_id)
+			->orderBy('state', 'asc')
+			->orderBy('order_id', 'desc')
+			->get();
+
+		foreach ($orders as $order) {
+			$order['items'] = $this->getFullOrderItems($order);
+			$order['sum'] = $this->getOrderSum($order);
+			$this->normalizeDelivery($order);
+		}
+
+		return $orders;
+	}
+
 
 	private function getNumberOfOrder($client_id) {
 		$ordersQuantity =  Order::where('client_id', '=', $client_id)->count();

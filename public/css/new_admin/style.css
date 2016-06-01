@@ -750,4 +750,83 @@ footer {
   .add_state_modal .delete_state:hover {
     color: inherit; }
 
+.one_client {
+  font-family: "Roboto","Helvetica","Arial",sans-serif;
+  margin-right: 12px;
+  margin-bottom: 40px;
+  float: left; }
+  .one_client .mdl-card__title {
+    height: 90px; }
+  .one_client .client_part .line {
+    width: 100%;
+    overflow: hidden;
+    height: 50px; }
+    .one_client .client_part .line .heading {
+      width: 45%;
+      float: left;
+      font-weight: 500; }
+    .one_client .client_part .line .value {
+      width: 55%;
+      float: right; }
+    .one_client .client_part .line a.value {
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.54); }
+      .one_client .client_part .line a.value:hover {
+        cursor: pointer;
+        color: rgba(0, 0, 0, 0.54); }
+
+.client {
+  font-family: "Roboto","Helvetica","Arial",sans-serif; }
+  .client h1 {
+    width: 100%;
+    margin-top: 0;
+    margin-bottom: 30px; }
+  .client .line {
+    width: 100%;
+    overflow: hidden; }
+    .client .line .heading {
+      width: 45%;
+      float: left;
+      font-weight: 500; }
+    .client .line .value {
+      width: 55%;
+      float: right; }
+    .client .line a.value {
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.54); }
+      .client .line a.value:hover {
+        cursor: pointer;
+        color: rgba(0, 0, 0, 0.54); }
+  .client .main {
+    float: left;
+    width: 50%; }
+  .client .history {
+    float: right;
+    width: 50%; }
+  .client .orders {
+    width: 100%;
+    float: left;
+    margin-top: 40px; }
+    .client .orders .one_order {
+      height: auto;
+      width: 100%;
+      margin-left: 0; }
+      .client .orders .one_order .order_part {
+        width: 30%; }
+      .client .orders .one_order .items_part {
+        width: 70%;
+        float: right; }
+        .client .orders .one_order .items_part .mdl-data-table td,
+        .client .orders .one_order .items_part .mdl-data-table th {
+          text-align: left; }
+
+.users .one_client .mdl-card__title {
+  height: 120px; }
+.users .one_client .line {
+  height: 50px; }
+.users .one_client .line_name {
+  height: 50px; }
+.users .one_client .line_company {
+  height: 50px; }
+
 /*# sourceMappingURL=style.css.map */
