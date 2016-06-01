@@ -254,7 +254,7 @@
                     </table>
                 </div>
                 <div class="mdl-card__actions mdl-card--border">
-                    <a href="#" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                    <a href="/admin/detailed_order?order_id={{$recentOrder->order_id}}" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
                         Подробнее
                     </a>
                 </div>
@@ -265,14 +265,11 @@
                     </button>
                     <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
                         for="{{$recentOrder->order_id}}-menu-trigger">
-                        <li class="mdl-menu__item">
-                            <a href="#" class="mark_order_done" data-id="{{$recentOrder->order_id}}">Отметить как выполненный</a>
+                        <li class="mdl-menu__item mark_order_done" data-id="{{$recentOrder->order_id}}">
+                            <p>Отметить как выполненный</p>
 						</li>
-                        <li class="mdl-menu__item">
-                            <a href="#">Изменить</a>
-						</li>
-                        <li class="mdl-menu__item">
-                            <a href="#">Удалить</a>
+						<li class="mdl-menu__item delete_order" data-id="{{$recentOrder->order_id}}">
+							<p>Удалить</p>
 						</li>
                     </ul>
                 </div>
@@ -305,10 +302,10 @@
                     </table>
                 </div>
                 <div class="mdl-card__actions mdl-card--border">
-                    <a href="#" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                    <a href="/admin/detailed_order?order_id={{$recentDoneOrder->order_id}}" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
                         Подробнее
                     </a>
-                    <a href="#" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect delete_btn">
+                    <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect delete_btn delete_order" data-id="{{$recentDoneOrder->order_id}}">
                         Удалить
                     </a>
                 </div>
@@ -421,4 +418,8 @@
         {{--@endif--}}
     @endif
 @stop
+@section('specific_page_js')
+	{{ HTML::script('js/admin/orders.js') }}
+@stop
+
 

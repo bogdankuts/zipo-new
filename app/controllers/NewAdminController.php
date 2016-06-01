@@ -9,31 +9,63 @@ class NewAdminController extends BaseController {
 
 	private function definePageTitle() {
 		$route = Route::currentRouteName();
-		if ( $route == 'dashboard') {
-			return $title = 'Dashboard';
-		} elseif ($route == 'new_admins_after') {
-			return $title = 'Новые админы';
-		} elseif ($route == 'new_clients_after') {
-			return $title = 'Новые Клиенты';
-		} elseif ($route == 'new_orders_after') {
-			return $title = 'Новые Заказы';
-		} elseif ($route == 'new_users_after') {
-			return $title = 'Новые Клиенты';
-		} elseif ($route == 'new_articles_after') {
-			return $title = 'Новые Статьи';
-		} elseif ($route == 'catalog_admin' || $route == 'items_admin') {
-			return $title = 'Каталог';
-		} elseif ($route == 'items_admin_change') {
-			return $title = 'Добавление/Изменение товара';
-		} elseif ($route == 'articles_admin') {
-			return $title = 'Статьи';
-		} elseif ($route == 'article_admin_change') {
-			return $title = 'Добавление/Изменение статьи';
-		} elseif ($route == 'admin_producer') {
-			return $title = 'Производители';
-		} elseif ($route == 'admin_producer_change') {
-			return $title = 'Добавление/Изменение производителя';
+		$title = '';
+
+		switch($route) {
+			case 'dashboard':
+				$title = 'Dashboard';
+				break;
+			case 'new_admins_after':
+				$title = 'Новые админы';
+				break;
+			case 'new_clients_after':
+				$title = 'Новые Клиенты';
+				break;
+			case 'new_orders_after':
+				$title = 'Новые Заказы';
+				break;
+			case  'new_users_after':
+				$title = 'Новые Клиенты';
+				break;
+			case 'new_articles_after':
+				$title = 'Новые Статьи';
+				break;
+			case 'catalog_admin':
+				$title = 'Каталог';
+				break;
+			case 'items_admin':
+				$title = 'Каталог';
+				break;
+			case 'items_admin_change':
+				$title = 'Добавление/Изменение товара';
+				break;
+			case 'articles_admin':
+				$title = 'Статьи';
+				break;
+			case 'article_admin_change':
+				$title = 'Добавление/Изменение статьи';
+				break;
+			case 'admin_producer':
+				$title = 'Производители';
+				break;
+			case 'admin_producer_change':
+				$title = 'Добавление/Изменение производителя';
+				break;
+			case 'admin_subcategories':
+				$title = 'Подкатегории';
+				break;
+			case 'admin_orders':
+				$title = 'Заказы';
+				break;
+			case 'admin_order':
+				$title = 'Заказ';
+				break;
+			case 'admin_clients':
+				$title = "Клиенты";
+				break;
 		}
+
+		return $title;
 	}
 
 	private function countIncorrectEnteties($entity) {
@@ -691,6 +723,146 @@ class NewAdminController extends BaseController {
 			return HELP::__delete('Producer', 'Производитель %s удален!', 'producer', 'back');
 		}
 	}
+
+	public function subcategories() {
+		$categories = [
+			'Механическое_en' => 'Механическое оборудование (импортное)',
+			'Тепловое_en' => 'Тепловое оборудование (импортное)',
+			'Холодильное_en' => 'Холодильное оборудование (импортное)',
+			'Моечное_en' => 'Моечное оборудование (импортное)',
+			'Механическое_ru' => 'Механическое оборудование (российское)',
+			'Тепловое_ru' => 'Тепловое оборудование (российское)',
+			'Холодильное_ru' => 'Холодильное оборудование (российское)',
+			'Моечное_ru' => 'Моечное оборудование (российское)'
+		];
+
+		return View::make('new_admin/subcategories')->with([
+			'env' 		    => 'subcategories',
+			'subcats'       => Subcat::readAllSubcats(),
+			'pageTitle'     => $this->definePageTitle(),
+		    'categories'    => $categories,
+		]);
+	}
+
+	public function updateSubcategory() {
+		$subcat_id = Input::get('subcat_id');
+		$fields = Input::all();
+
+		$rules = [
+			'subcat' => 'required|unique:subcats,subcat,NULL,subcat_id,category,'.$fields['category']
+		];
+		$validator = Validator::make($fields, $rules);
+
+		if ($validator->fails()) {
+			return Redirect::back()->withInput()
+			               ->withErrors('Подкатегория с таким названием уже существует!');
+		} else {
+			Subcat::updateOrCreate(['subcat_id' => $subcat_id], $fields);
+			return Redirect::back();
+		}
+	}
+
+	public function ajaxDeleteSubcategory() {
+		return HELP::__delete('Subcat', 'Подкатегория %s удалена', 'subcat', '/admin/subcategories');
+	}
+
+	public function orders() {
+		$orders = new Order();
+		$orders = $orders->getAllOrders();
+
+		return View::make('new_admin/orders')->with([
+			'env' 		    => 'orders',
+			'orders'        => $orders,
+			'pageTitle'     => $this->definePageTitle(),
+		    'states'        => State::all()
+		]);
+	}
+
+	public function detailedOrder() {
+		$order = new Order();
+		$order = $order->getDetailedOrder(Input::get('order_id'));
+
+		return View::make('new_admin/order')->with([
+			'env' 		    => 'order',
+			'order'         => $order,
+			'states'        => State::all(),
+			'pageTitle'     => $this->definePageTitle(),
+		]);
+	}
+
+	public function changeOrderState() {
+		$order_id = Input::get('order_id');
+		$state_id = Input::get('state');
+
+		$order = Order::find($order_id);
+		$order->state = $state_id;
+		$order->save();
+
+	}
+
+	public function deleteOrder() {
+		$order_id = Input::get('order_id');
+		$order = Order::find($order_id);
+
+		$order->deleted = 1;
+		$order->save();
+
+		return Redirect::route('admin_orders');
+	}
+
+	public function ajaxDeleteOrder() {
+		$order_id = Input::get('order_id');
+		$order = Order::find($order_id);
+
+		$order->deleted = 1;
+		$order->save();
+	}
+
+	public function createState() {
+		$fields = Input::all();
+
+		$rules = [
+			'state_title' => 'required|unique:states,state_title'
+		];
+		$validator = Validator::make($fields, $rules);
+
+		if ($validator->fails()) {
+			return Redirect::back()->withInput()
+			               ->withErrors('Статус с таким названием уже существует!');
+		} else {
+			State::create($fields);
+			return Redirect::back();
+		}
+	}
+
+	public function ajaxUpdateState() {
+		$state_id = Input::get('state_id');
+		$new_title = Input::get('new_state');
+
+		$state = State::find($state_id);
+		$state->state_title = $new_title;
+
+		$state->save();
+	}
+
+	public function ajaxDeleteState() {
+		$state_id = Input::get('state_id');
+
+		$state = State::find($state_id);
+
+		$state->delete();
+	}
+
+	public function clients() {
+
+		return View::make('new_admin/clients')->with([
+			'env' 		    => 'clients',
+			'clients'       => Client::all(),
+			'pageTitle'     => $this->definePageTitle(),
+		]);
+	}
+
+
 
 
 

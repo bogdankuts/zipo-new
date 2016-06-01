@@ -35,15 +35,15 @@ class CartController extends BaseController {
 		$this->dataIsValid($email);
 
 		if ($file) {
-			$filepath = $this->loadRequisitesToServer($data);
+			$fileName = $this->loadRequisitesToServer($data);
 		} else {
-			$filepath = '';
+			$fileName = '';
 		}
 
 		$clientId = $this->addClientToDB($data);
-		$orderId = $this->addOrderToDB($data, $clientId, $orderItems, $filepath);
+		$orderId = $this->addOrderToDB($data, $clientId, $orderItems, $fileName);
 
-		$this->sendEmails($data, $orderId, $filepath);
+		$this->sendEmails($data, $orderId, $fileName);
 
 		$this->clearCart();
 
@@ -67,7 +67,7 @@ class CartController extends BaseController {
 		$file->move($destinationPath, $filename);
 		$filepath = $destinationPath.'/'.$filename;
 
-		return $filepath;
+		return $filename;
 	}
 
 	private function dataIsValid($email) {
@@ -85,12 +85,13 @@ class CartController extends BaseController {
 		$clientData['phone'] = $data['phone'];
 		$clientData['company'] = $data['company'];
 		$clientData['form_of_business'] = $data['form'];
-		$clientData['added_at'] = date('Y-m-d', time());
+		//$clientData['added_at'] = date('Y-m-d', time());
 
 		$match = [];
 		foreach ($clientData as $key=>$value) {
 			$match[$key] = $value;
 		}
+		$clientData['added_at'] = date('Y-m-d', time());
 
 		$oldClient = new Client;
 		$oldClient = $oldClient->getOldClient($match);
@@ -129,17 +130,18 @@ class CartController extends BaseController {
 		return $items;
 	}
 
-	private function sendEmails($data, $orderId, $filepath) {
-		$this->sendToAdmin($data, $orderId, $filepath);
+	private function sendEmails($data, $orderId, $fileName) {
+		$this->sendToAdmin($data, $orderId, $fileName);
 		$this->sendToUser($data, $orderId);
 	}
 
-	private function sendToAdmin($data, $orderId, $filepath) {
+	private function sendToAdmin($data, $orderId, $fileName) {
 		$data['items'] = $this->formOrderItemsArray($orderId);
 		$data['orderId'] = $orderId;
 		if ($data['requisites']) {
-			Mail::send('emails.email_order', $data, function ($mail) use ($data, $filepath) {
+			Mail::send('emails.email_order', $data, function ($mail) use ($data, $fileName) {
 				$mail->to('vsezip@gmail.com', $data['name'])->subject('Заказ оформлен - vsezip.ru');
+				$filepath = public_path().DIRECTORY_SEPARATOR.'requisites'.'/'.$fileName;
 				$mail->attach($filepath);
 			});
 		}else {
@@ -158,8 +160,12 @@ class CartController extends BaseController {
 	}
 
 	private function getStoredCart() {
-		$cartCookie = $_COOKIE['shopcartItems'];
-		$cartItems = json_decode($cartCookie);
+		if(isset($_COOKIE['shopcartItems'])) {
+			$cartCookie = $_COOKIE['shopcartItems'];
+			$cartItems = json_decode($cartCookie);
+		} else {
+			$cartItems = [];
+		}
 		return $cartItems;
 	}
 

@@ -110,6 +110,7 @@ Route::group(['prefix'=>'/admin_old', 'before'=>'auth2'], function() {
 Route::get('/admin', array('as' => 'dashboard', 'uses' => 'NewAdminController@admin'));
 //Route::post('/admin_login', 'AdminController@admin_login');
 Route::group(['prefix'=>'/admin', 'before'=>'auth2'], function() {
+	//DASHBOARD
 	Route::get('/new-admins-after-last-visit/{last_visit}', array('as' => 'new_admins_after', 'uses' => 'NewAdminController@newAdminsAfterVisit'));
 	Route::get('/new-clients-after-last-visit/{last_visit}', array('as' => 'new_clients_after', 'uses' => 'NewAdminController@newClientsAfterVisit'));
 	Route::get('/new-orders-after-last-visit/{last_visit}', array('as' => 'new_orders_after', 'uses' => 'NewAdminController@newOrdersAfterVisit'));
@@ -118,6 +119,7 @@ Route::group(['prefix'=>'/admin', 'before'=>'auth2'], function() {
 	Route::post('/toggle_item_hit/{id}', 'NewAdminController@toggleItemHit');
 	Route::post('/mark-order-as-done/{id}', 'NewAdminController@markOrderAsDone');
 	Route::get('/catalog', array('as' => 'catalog_admin', 'uses' => 'NewAdminController@catalog'));
+
 	// ITEM
 	Route::get('/{category}/{subcat}', array('as' => 'items_admin', 'uses' => 'NewAdminController@items'));
 	Route::get('/change_item', array('as' => 'items_admin_change', 'uses' => 'NewAdminController@changeItem'));
@@ -136,8 +138,6 @@ Route::group(['prefix'=>'/admin', 'before'=>'auth2'], function() {
 	Route::post('/ajax-get-subcategories', 'NewAdminController@getSubcategories');
 	Route::post('/ajax_item_image', 'NewAdminController@ajaxItemImage');
 
-
-
 	// ARTICLE
 	Route::get('/articles', array('as' => 'articles_admin', 'uses' => 'NewAdminController@articles'));
 	Route::get('/change_article', array('as' => 'article_admin_change', 'uses' => 'NewAdminController@changeArticle'));
@@ -151,6 +151,30 @@ Route::group(['prefix'=>'/admin', 'before'=>'auth2'], function() {
 	Route::post('/update_producer', 'NewAdminController@updateProducer');
 	Route::post('/ajax-delete-producer', 'NewAdminController@ajaxDeleteProducer');
 	Route::post('/delete_producer', 'NewAdminController@deleteProducer');
+
+	// SUBCATEGORIES
+	Route::get('/subcategories', array('as' => 'admin_subcategories', 'uses' => 'NewAdminController@subcategories'));
+	Route::post('/update_subcategory', 'NewAdminController@updateSubcategory');
+	Route::post('/ajax-delete-subcategory', 'NewAdminController@ajaxDeleteSubcategory');
+
+	//ORDERS
+	Route::get('/orders', array('as' => 'admin_orders', 'uses' => 'NewAdminController@orders'));
+	Route::get('/detailed_order', array('as' => 'admin_order', 'uses' => 'NewAdminController@detailedOrder'));
+	Route::post('/change-order-state', 'NewAdminController@changeOrderState');
+	Route::post('/ajax-delete-order', 'NewAdminController@ajaxDeleteOrder');
+	Route::post('/delete_order', 'NewAdminController@deleteOrder');
+
+	//STATES
+	Route::post('/create_state', 'NewAdminController@createState');
+	Route::post('/ajax-update-state', 'NewAdminController@ajaxUpdateState');
+	Route::post('/ajax-delete-state', 'NewAdminController@ajaxDeleteState');
+
+	//CLIENTS
+	Route::get('/clients', array('as' => 'admin_clients', 'uses' => 'NewAdminController@clients'));
+
+
+
+
 
 
 

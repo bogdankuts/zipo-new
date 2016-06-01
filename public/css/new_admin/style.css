@@ -528,11 +528,14 @@ footer {
 .add_btn {
   position: fixed;
   bottom: 50px;
-  right: 2%; }
+  right: 2%;
+  z-index: 2; }
   .add_btn a {
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.14), 0 4px 8px rgba(0, 0, 0, 0.28); }
   .add_btn:hover a {
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.16), 0 6px 12px rgba(0, 0, 0, 0.32); }
+  .add_btn:hover, .add_btn:active, .add_btn:focus {
+    outline: none; }
 
 .producers_list {
   float: left;
@@ -544,5 +547,207 @@ footer {
       cursor: pointer; }
   .producers_list .admin_producer_one .change {
     float: right; }
+
+.admin_main_content--subcategories {
+  padding: 20px; }
+  .admin_main_content--subcategories .admin_one_cat_heading {
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: -.04em; }
+  .admin_main_content--subcategories .edit:hover {
+    color: inherit; }
+  .admin_main_content--subcategories .admin_uni_label {
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: -.04em; }
+    .admin_main_content--subcategories .admin_uni_label--subheading {
+      font-size: 18px;
+      width: 50%; }
+
+.add_subcategory {
+  margin-top: -4px; }
+  .add_subcategory:focus, .add_subcategory:hover, .add_subcategory:active {
+    outline: none;
+    color: inherit; }
+
+.add_subcategory_modal h4 {
+  font-family: "Roboto","Helvetica","Arial",sans-serif; }
+.add_subcategory_modal form {
+  width: 100%; }
+  .add_subcategory_modal form select {
+    width: 100%;
+    margin-top: 10px; }
+  .add_subcategory_modal form .mdl-textfield {
+    width: 100%; }
+
+.admin_catalog_category {
+  width: 100%;
+  float: left;
+  margin-bottom: 30px; }
+  .admin_catalog_category .edit,
+  .admin_catalog_category .delete {
+    float: right; }
+
+.subcats_list {
+  float: left;
+  width: 30%;
+  list-style: none; }
+
+.admin_one_cat_heading {
+  margin-bottom: 20px; }
+
+.admin_subcategory {
+  width: 80%; }
+
+.admin_main_content--orders {
+  padding: 20px; }
+
+.one_order {
+  width: 30%;
+  float: left;
+  margin-left: 32px;
+  margin-bottom: 40px;
+  height: 340px; }
+  .one_order.active_client {
+    width: 94.7%; }
+    .one_order.active_client .order_part {
+      width: 46%; }
+    .one_order.active_client .client_part {
+      display: table; }
+      .one_order.active_client .client_part .main,
+      .one_order.active_client .client_part .additional {
+        width: 50%;
+        float: left; }
+  .one_order .title {
+    font-size: 18px;
+    font-weight: bold;
+    text-align: left;
+    width: 100%; }
+  .one_order .mdl-card__supporting-text {
+    width: 100%; }
+  .one_order .line {
+    width: 100%;
+    overflow: hidden; }
+    .one_order .line .heading {
+      font-weight: 600;
+      float: left;
+      width: 30%; }
+    .one_order .line .value {
+      width: 70%;
+      color: inherit;
+      font-size: 14px; }
+  .one_order .order_part {
+    width: 100%;
+    float: left; }
+    .one_order .order_part table {
+      width: 100%; }
+  .one_order .client_part {
+    display: none;
+    width: 46%;
+    float: right; }
+  .one_order .about_client {
+    float: right; }
+  .one_order .client_less {
+    display: none;
+    float: right; }
+
+.order h2 {
+  width: 100%;
+  margin-bottom: 30px;
+  font-family: "Roboto","Helvetica","Arial",sans-serif; }
+.order .delete_block {
+  float: right; }
+.order .items_item_descript {
+  overflow: hidden; }
+.order .result_block {
+  width: 100%;
+  overflow: hidden;
+  margin-top: 30px; }
+  .order .result_block p {
+    font-size: 16px;
+    font-weight: 600;
+    font-family: "Roboto","Helvetica","Arial",sans-serif; }
+.order .mdl-card {
+  padding: 20px;
+  display: block; }
+  .order .mdl-card .mdl-card__title {
+    padding-left: 0; }
+.order .title {
+  font-size: 18px;
+  font-weight: bold;
+  text-align: left;
+  width: 100%; }
+.order .mdl-card__supporting-text {
+  width: 100%; }
+.order .line {
+  width: 100%;
+  overflow: hidden; }
+  .order .line .heading {
+    font-weight: 600;
+    float: left;
+    width: 30%; }
+    .order .line .heading.clients_order {
+      width: auto;
+      float: left;
+      font-size: 18px;
+      margin-top: 8px;
+      color: #ffab40; }
+  .order .line .value {
+    width: 70%; }
+  .order .line .value {
+    color: inherit; }
+.order .client_more {
+  float: right; }
+.order .order_part {
+  width: 49%;
+  float: left; }
+  .order .order_part table {
+    width: 100%; }
+.order .client_part {
+  width: 49%;
+  float: right; }
+  .order .client_part .main,
+  .order .client_part .additional {
+    width: 50%;
+    float: left; }
+.order .items_part {
+  width: 100%;
+  margin-top: 50px;
+  float: left; }
+  .order .items_part .final_sum_block {
+    width: 100%; }
+    .order .items_part .final_sum_block .general_sum {
+      font-size: 18px;
+      float: right;
+      margin-right: 40px;
+      color: #f44336;
+      text-transform: uppercase; }
+
+.mdl-card__menu a.mdl-menu__item:hover {
+  color: rgba(0, 0, 0, 0.87); }
+
+.add_state_modal .title {
+  font-size: 18px; }
+.add_state_modal form {
+  width: 94%; }
+.add_state_modal .mdl-textfield {
+  width: 80%;
+  float: left; }
+.add_state_modal .save_state,
+.add_state_modal .create_state {
+  float: right;
+  color: #f44336;
+  margin-top: 15px; }
+  .add_state_modal .save_state:hover,
+  .add_state_modal .create_state:hover {
+    color: #f44336;
+    cursor: pointer; }
+.add_state_modal .delete_state {
+  float: right;
+  margin-top: 15px; }
+  .add_state_modal .delete_state:hover {
+    color: inherit; }
 
 /*# sourceMappingURL=style.css.map */

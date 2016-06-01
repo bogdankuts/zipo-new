@@ -39,6 +39,9 @@
 
 	@yield('modal-change-subcat')
 	@yield('modal-add-to-pdf')
+	@yield('modal-add-subcat')
+	@yield('modal-edit-subcat')
+	@yield('modal-add-state')
 
 	<script>
 		{{--@include('partials/js_globals')--}}

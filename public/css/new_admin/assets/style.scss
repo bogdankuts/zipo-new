@@ -648,6 +648,7 @@ footer {
 	position: fixed;
 	bottom: 50px;
 	right: 2%;
+	z-index: 2;
 	a {
 		box-shadow: 0 0 4px rgba(0,0,0,.14),0 4px 8px rgba(0,0,0,.28);
 	}
@@ -655,6 +656,11 @@ footer {
 		a {
 			box-shadow: 0 0 6px rgba(0,0,0,.16),0 6px 12px rgba(0,0,0,.32)
 		}
+	}
+	&:hover,
+	&:active,
+	&:focus {
+		outline: none;
 	}
 }
 .producers_list {
@@ -676,3 +682,288 @@ footer {
 	}
 }
 
+//SUBCATEGORIES
+.admin_main_content--subcategories {
+	padding: 20px;
+	.admin_one_cat_heading {
+		font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+		font-weight: 400;
+		line-height: 1;
+		letter-spacing: -.04em;
+	}
+	.edit {
+		&:hover {
+			color: inherit;
+		}
+	}
+	.admin_uni_label {
+		font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+		font-weight: 300;
+		line-height: 1;
+		letter-spacing: -.04em;
+		&--subheading {
+			font-size: 18px;
+			width: 50%;
+		}
+	}
+
+}
+.add_subcategory {
+	margin-top: -4px;
+	&:focus,
+	&:hover,
+	&:active {
+		outline: none;
+		color: inherit;
+	}
+}
+.add_subcategory_modal {
+	h4 {
+		font-family: "Roboto","Helvetica","Arial",sans-serif;
+	}
+	form {
+		width: 100%;
+		select {
+			width: 100%;
+			margin-top: 10px;
+		}
+		.mdl-textfield {
+			width: 100%;
+		}
+	}
+}
+.admin_catalog_category {
+	width: 100%;
+	float: left;
+	margin-bottom: 30px;
+	.edit,
+	.delete {
+		float: right;
+	}
+}
+.subcats_list {
+	float: left;
+	width: 30%;
+	list-style: none;
+	//padding-left: 0;
+
+}
+.admin_one_cat_heading {
+	margin-bottom: 20px;
+}
+.admin_subcategory {
+	width: 80%;
+}
+
+//ORDERS
+.admin_main_content--orders {
+	padding: 20px;
+}
+.one_order {
+	width: 30%;
+	float: left;
+	margin-left: 32px;
+	margin-bottom: 40px;
+	height: 340px;
+	&.active_client {
+		width: 94.7%;
+		.order_part {
+			width: 46%;
+		}
+		.client_part {
+			display: table;
+			.main,
+			.additional {
+				width: 50%;
+				float: left;
+			}
+		}
+	}
+	.title {
+		font-size: 18px;
+		font-weight: bold;
+		text-align: left;
+		//text-align: center;
+		width: 100%;
+	}
+	.mdl-card__supporting-text {
+		width: 100%;
+	}
+	.line {
+		width: 100%;
+		overflow: hidden;
+		.heading {
+			font-weight: 600;
+			float: left;
+			width: 30%;
+
+		}
+		.value {
+			width: 70%;
+			color: inherit;
+			font-size: 14px;
+		}
+	}
+	.order_part {
+		width: 100%;
+		float: left;
+		table {
+			width: 100%;
+		}
+
+	}
+	.client_part {
+		display: none;
+		width: 46%;
+		float: right;
+	}
+	.about_client {
+		float: right;
+	}
+	.client_less {
+		display: none;
+		float: right;
+	}
+}
+//ORDER
+.order {
+	h2 {
+		width: 100%;
+		margin-bottom: 30px;
+		font-family: "Roboto","Helvetica","Arial",sans-serif;
+
+	}
+	.delete_block {
+		float: right;
+		.btn_del {
+		}
+	}
+	.items_item_descript {
+		overflow: hidden;
+	}
+	.result_block {
+		width: 100%;
+		overflow: hidden;
+		margin-top: 30px;
+		p{
+			font-size: 16px;
+			font-weight: 600;
+			font-family: "Roboto","Helvetica","Arial",sans-serif;
+		}
+
+	}
+	.mdl-card {
+		padding: 20px;
+		display: block;
+		.mdl-card__title {
+			padding-left: 0;
+		}
+	}
+	.title {
+		font-size: 18px;
+		font-weight: bold;
+		text-align: left;
+		//text-align: center;
+		width: 100%;
+	}
+	.mdl-card__supporting-text {
+		width: 100%;
+	}
+	.line {
+		width: 100%;
+		overflow: hidden;
+		.heading {
+			font-weight: 600;
+			float: left;
+			width: 30%;
+			&.clients_order {
+				//width: 100%;
+				width: auto;
+				float: left;
+				font-size: 18px;
+				margin-top: 8px;
+				color: $secondary;
+			}
+		}
+		.value {
+			width: 70%;
+		}
+		.value{
+			color: inherit;
+		}
+	}
+	.client_more {
+		float: right;
+	}
+	.order_part {
+		width: 49%;
+		float: left;
+		table {
+			width: 100%;
+		}
+
+	}
+	.client_part {
+		width: 49%;
+		float: right;
+		.main,
+		.additional {
+			width: 50%;
+			float: left;
+		}
+		.additional {
+			//float: right;
+		}
+	}
+	.items_part {
+		width: 100%;
+		margin-top: 50px;
+		float: left;
+		.final_sum_block {
+			width: 100%;
+			.general_sum {
+				font-size: 18px;
+				float: right;
+				margin-right: 40px;
+				color: $primary;
+				text-transform: uppercase;
+			}
+		}
+	}
+}
+.mdl-card__menu {
+	a.mdl-menu__item {
+		&:hover {
+			color: rgba(0,0,0,.87);
+		}
+	}
+}
+.add_state_modal {
+	.title {
+		font-size: 18px;
+	}
+	form {
+		width: 94%;
+	}
+	.mdl-textfield {
+		width: 80%;
+		float: left;
+	}
+	.save_state,
+	.create_state {
+		float: right;
+		color: $primary;
+		margin-top: 15px;
+		&:hover {
+			color: $primary;
+			cursor: pointer;
+		}
+	}
+	.delete_state {
+		float: right;
+		margin-top: 15px;
+		&:hover {
+			color: inherit;
+		}
+	}
+}

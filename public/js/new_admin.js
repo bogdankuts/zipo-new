@@ -14,7 +14,8 @@ $('#articles_more_statistic').on('click', function() {
     $('.articles_more_statistic_block').slideDown();
 });
 $('.list_make_hit').on('change', function() {
-    $.post('admin/toggle_item_hit/'+$(this).data('id'));
+    $.post(
+	    'admin/toggle_item_hit/'+$(this).data('id'));
 });
 function countNotifications() {
     var existing = $('.one_notification').filter(function() {
@@ -57,7 +58,7 @@ $('.close_notification-orders').on('click', function() {
 });
 
 $('.mark_order_done').on('click', function() {
-	$.post('admin/mark-order-as-done/'+$(this).data('id'))
+	$.post('/admin/mark-order-as-done/'+$(this).data('id'))
 		.done(
 			location.reload()
 		);
