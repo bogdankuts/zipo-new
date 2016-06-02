@@ -54,7 +54,6 @@ $state.on('change', function() {
 });
 
 $('.delete_order').on('click', function() {
-	console.log('shit');
 	$.ajax({
 		url: '/admin/ajax-delete-order',
 		type: 'POST',

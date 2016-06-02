@@ -25,20 +25,12 @@
             <a class="mdl-navigation__link @if ( $env == 'users' || $env == 'user') active_nav @endif" href="/admin/users">Пользователи</a>
             <div class="mdl-navigation__devider"></div>
 
-            <a class="mdl-navigation__link" href="">Деталировки</a>
-            <a class="mdl-navigation__link" href="">Добавить деталировку</a>
+            <a class="mdl-navigation__link @if ( $env == 'pdfs') active_nav @endif" href="/admin/list_pdf">Деталировки</a>
+            <a class="mdl-navigation__link @if ( $env == 'create_pdf' || $env == 'change_pdf' ) active_nav @endif" href="/admin/create_pdf">Добавить деталировку</a>
             <div class="mdl-navigation__devider"></div>
 
-            <a class="mdl-navigation__link" href="">Администраторы</a>
+            <a class="mdl-navigation__link @if ( $env == 'admins') active_nav @endif" href="/admin/list_admin">Администраторы</a>
             <a class="mdl-navigation__link" href="">Добавить администратора</a>
         </nav>
     </div>
 @stop
-
-
-{{--<a href="/admin/change_item" class="@if ($env == 'change_item') active_my @endif admin_sidebar_button"><i class="fa fa-cart-plus"></i>Добавить товар</a>--}}
-{{--<a href="/admin/change_article" class="@if ($env == 'change_article') active_my @endif admin_sidebar_button"><i class="fa fa-bullhorn"></i>Добавить новость</a>--}}
-{{--<a href="/admin/subcats" class="@if ($env == 'subcats') active_my @endif admin_sidebar_button"><i class="fa fa-sitemap"></i>Подкатегории</a>--}}
-{{--<a href="/admin/catalog" class="@if ($env == 'catalog_admin') active_my @endif admin_sidebar_button"><i class="fa fa-book"></i>Каталог</a>--}}
-{{--<a href="/admin/articles" class="@if ($env == 'articles') active_my @endif admin_sidebar_button"><i class="fa fa-list-alt"></i>Новости</a>--}}
-{{--<a href="/admin/producers" class="@if ($env == 'producers') active_my @endif admin_sidebar_button"><i class="fa fa-users"></i>Производители</a>--}}

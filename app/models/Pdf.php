@@ -65,6 +65,17 @@ class Pdf extends BaseModel {
 		Pdf::where('producer_id', $producer_id)->update(['producer_id' => 0]);
 	}
 
+	public static function getPdf($pdf_id) {
+		$pdf = new Pdf();
+		$pdf = $pdf
+			->join('subcats', 'subcats.subcat_id', '=', 'pdfs.subcat_id')
+			->join('producers', 'producers.producer_id', '=', 'pdfs.producer_id');
+		$pdf = $pdf->find($pdf_id);
+
+
+		return $pdf;
+	}
+
 	// public function setGoodAttribute($value) {
 	// 	$this->attributes['good'] = trim($value);
 	// }

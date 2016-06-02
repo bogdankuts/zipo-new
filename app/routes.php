@@ -25,11 +25,7 @@ Route::post('/user_logout', 'MainController@user_logout');
 Route::get('/cart', 'CartController@cart');
 Route::get('/check', 'CartController@checkCookie');
 
-
-
-/*------------------------------------------------
-| PDF
-------------------------------------------------*/
+//PDF
 Route::get('/all_pdf', "PdfController@all_pdf");
 Route::get('/all_pdf/{producer}', "PdfController@all_pdf_by_prod");
 Route::get('/all_pdf/{producer}/{subcat}', "PdfController@all_pdf_by_cat");
@@ -177,8 +173,21 @@ Route::group(['prefix'=>'/admin', 'before'=>'auth2'], function() {
 	Route::get('/users', array('as' => 'admin_users', 'uses' => 'NewAdminController@users'));
 	Route::get('/detailed_user', array('as' => 'admin_user', 'uses' => 'NewAdminController@user'));
 
+	// PDFS
+	Route::get('/create_pdf',  array('as' => 'create_pdf', 'uses' => 'NewAdminController@createPdf'));
+	Route::post('/load_pdf', 'NewAdminController@loadPdf');
+	Route::get('/list_pdf',  array('as' => 'admin_pdfs', 'uses' => 'NewAdminController@listPdf'));
+	Route::get('/change_pdf',  array('as' => 'admin_pdf', 'uses' => 'NewAdminController@changePdf'));
+	Route::post('/update_pdf', 'NewAdminController@updatePdf');
+	Route::post('/ajax-delete-pdf', 'NewAdminController@ajaxDeletePdf');
+	Route::post('/delete_pdf', 'NewAdminController@deletePdf');
+	//Route::get('/item_pdfs', 'PdfController@item_pdfs');
 
-
+	//ADMINS
+	Route::get('/list_admins', array('as' => 'admins', 'uses' => 'NewAdminController@admins'));
+	//Route::post('/new_admin', 'AdminController@new_admin');
+	//Route::post('/delete_admin', 'AdminController@delete_admin');
+	//Route::post('/update_admin', 'AdminController@update_admin');
 
 
 

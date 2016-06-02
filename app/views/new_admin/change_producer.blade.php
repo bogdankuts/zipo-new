@@ -9,7 +9,7 @@
 		{{ Form::model($producer, ['url'=>[URL::to('/admin/update_producer?'.Request::getQueryString())], 'class'=>'update_item_form', 'method'=>'POST', 'files' => 'true']) }}
 		<div class="change_block change_item_title_block">
 			<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-				{{ Form::label('producer', 'Призводитель', ['class'=>'mdl-textfield__label']) }}
+				{{ Form::label('producer', 'Производитель', ['class'=>'mdl-textfield__label']) }}
 				{{ Form::text('producer', null, ['class'=>'mdl-textfield__input', 'required', 'id' => 'producer']) }}
 			</div>
 		</div>

@@ -3,6 +3,8 @@
  */
 
 $category = $('#CategorySelect').val();
+console.log($category);
+
 $subcategory = $('#subcategoryActive').val();
 
 //	choose active category

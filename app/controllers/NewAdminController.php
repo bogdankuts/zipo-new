@@ -72,6 +72,18 @@ class NewAdminController extends BaseController {
 			case 'admin_user':
 				$title = "Позьзователь";
 				break;
+			case 'admin_pdfs':
+				$title = "Деталировки";
+				break;
+			case 'admin_pdf':
+				$title = "Деталировка";
+				break;
+			case 'create_pdf':
+				$title = "Загрузка деталировки";
+				break;
+			case 'admins':
+				$title = "Администраторы";
+				break;
 		}
 
 		return $title;
@@ -607,6 +619,20 @@ class NewAdminController extends BaseController {
 		$image->save();
 	}
 
+	private function addWatermarkPdf($filename) {
+		$watermark_path = dir_path('icons').dir_sep().'watermark.png';
+		$watermark = Image::make($watermark_path);
+		$image = Image::make(dir_path('pdf').dir_sep().$filename);
+
+		// resize watermark TODO::abstract this part?
+		$width = $image->width();
+		$height = $image->height();
+		$watermark->fit($width, $height);
+
+		$image->insert($watermark, 'center', 0, 0);
+		$image->save();
+	}
+
 	public function articles() {
 		return View::make('new_admin/articles')->with([
 			'env' 		=> 'articles',
@@ -918,6 +944,153 @@ class NewAdminController extends BaseController {
 			'pageTitle'     => $this->definePageTitle(),
 		]);
 	}
+
+	public function listPdf() {
+		//print_r(Pdf::with('subcat')->orderBy('good', 'asc')->get()->flate());
+		//exit;
+		$pdfs = Pdf::with('subcat')
+			->with('producer')
+			->orderBy('good', 'asc')
+			->get()
+			->flate();
+		return View::make('new_admin/pdfs')->with([
+			'pdfs'			=> $pdfs,
+			//'producers' 	=> Producer::all(),
+			//'categories'	=> Subcat::readAllSubcats(),
+			'env'           => 'pdfs',
+			'pageTitle'     => $this->definePageTitle(),
+
+		]);
+	}
+
+	public function ajaxDeletePdf() {
+		$pdf = Pdf::find(Input::get('pdf_id'));
+
+		DB::table('item_pdf')
+			->where('pdf_id', '=', Input::get('pdf_id'))
+			->delete();
+
+		$pdf->delete();
+
+	}
+
+	public function changePdf() {
+		$pdf = Pdf::getPdf(Input::get('pdf_id'));
+
+		return View::make('new_admin/change_pdf')->with([
+			'env' 		=> 'change_pdf',
+			'pdf'	    => $pdf,
+			'producers' => Producer::all(),
+			'pageTitle' => $this->definePageTitle(),
+		]);
+	}
+
+	public function createPdf() {
+		$pdf = Pdf::find(Input::get('pdf_id'));
+
+		return View::make('new_admin/create_pdf')->with([
+			'env' 		=> 'create_pdf',
+			'pdf'       => $pdf,
+			'producers' => Producer::all(),
+			'pageTitle' => $this->definePageTitle(),
+		]);
+	}
+
+	private function createPdfFileName($extension) {
+		if ($extension == 'pdf' || $extension == 'PDF') {
+			$filename = 'pdf_'.time().'.'.$extension;
+		} elseif ($extension == 'doc' || $extension == 'DOC' || $extension == 'docx' || $extension == 'DOCX') {
+			$filename = 'doc_'.time().'.'.$extension;
+		} elseif ($extension == 'jpg' || $extension == 'JPG' || $extension == 'jpeg' || $extension == 'JPEG' || $extension == 'png' || $extension == 'PNG') {
+			$filename = 'img_'.time().'.'.$extension;
+		} elseif ($extension == 'xsl' || $extension == 'XLS' || $extension == 'xlsx' || $extension == 'XLSX') {
+			$filename = 'tbl_'.time().'.'.$extension;
+		} else {
+			$filename = 'ukf_'.time().'.'.$extension;
+		}
+
+		return$filename;
+	}
+
+	private function checkPdfExtension($extension) {
+		$allowed_extensions = ['pdf', 'PDF', 'doc', 'DOC', 'docx', 'DOCX', 'jpg', 'JPG', 'jpeg', 'JPEG', 'png', 'PNG', 'xls', 'XLS', 'xlsx', 'XLSX'];
+
+		if (!in_array($extension, $allowed_extensions)) {
+			return Redirect::to('/admin/create_pdf')->withErrors(
+				"Выбранный файл должен иметь формат	'.pdf', '.doc', '.docx', '.jpg', '.jpeg', '.png', '.xls', или '.xlsx'"
+			);
+		}
+	}
+
+	private function formPdfFields($filename) {
+		$fields = Input::all();
+		$fields = array_map('trim', Input::all());
+		unset($fields['category']);
+		unset($fields['subcategoryActive']);
+		$fields['file'] = $filename;
+
+		return $fields;
+	}
+
+	public function loadPdf() {
+		if (Input::hasFile('file')) {
+			$file = Input::file('file');
+			$destinationPath = HELP::$PDF_IMPORT_DIR;
+			$extension = $file->getClientOriginalExtension();
+
+			$this->checkPdfExtension($extension);
+			$filename = $this->createPdfFileName($extension);
+			$fields = $this->formPdfFields($filename);
+
+			$rules = [
+				'good'	=> 'required|unique:pdfs,good'
+			];
+			$validator = Validator::make($fields, $rules);
+
+			if ($validator->fails()) {
+				return Redirect::back()->withInput()->withErrors('Товар с таким названием уже существует. Название должно быть уникальным!');
+			} else {
+				$file->move($destinationPath, $filename);
+				if ($extension == 'jpg' || $extension == 'JPG' || $extension == 'jpeg' || $extension == 'JPEG' || $extension == 'png' || $extension == 'PNG') {
+					$this->addWatermarkPdf($filename);
+				}
+				Pdf::create($fields);
+				return Redirect::to('/admin/create_pdf')->with('message', 'Деталировка успешно загружена!');
+			}
+		} else {
+			return Redirect::to('/admin/create_pdf')->withErrors('Деталировка не выбрана!');
+		}
+	}
+
+	public function updatePdf() {
+		$fields = Input::all();
+		unset($fields['subcategoryActive']);
+		unset($fields['category']);
+
+		$pdf_id = Input::get('pdf_id');
+
+		$pdf = Pdf::find($pdf_id)->update($fields);
+
+		return Redirect::back()->with('message', 'Деталировка изменена успешно.');
+	}
+
+	public function deletePdf() {
+		$pdf = Pdf::find(Input::get('pdf_id'));
+
+		DB::table('item_pdf')
+		  ->where('pdf_id', '=', Input::get('pdf_id'))
+		  ->delete();
+
+
+		$contains = Str::contains(URL::previous(), '/admin/change_pdf');
+		if ($contains) {
+			return HELP::__delete('Pdf', 'Деталировка %s удалена!', 'producer', '/admin/add_pdf');
+		} else {
+			return HELP::__delete('Pdf', 'Деталировка %s удалена!', 'producer', 'back');
+		}
+	}
+
+
 
 
 

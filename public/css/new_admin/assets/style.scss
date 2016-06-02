@@ -1084,3 +1084,60 @@ footer {
 		}
 	}
 }
+
+//PDFS
+.pdfs {
+	font-family: "Roboto","Helvetica","Arial",sans-serif;
+	.one_pdf {
+		float: left;
+		margin-right: 12px;
+		margin-bottom: 40px;
+		.line {
+			width: 100%;
+			float: left;
+			height: 50px;
+			&.subcat {
+				height: 90px;
+			}
+			&.title {
+				text-align: left;
+				height: 120px;
+			}
+			.heading_full {
+				width: 100%;
+				font-weight: 500;
+				font-size: 15px;
+			}
+			.heading {
+				width: 45%;
+				float: left;
+				font-weight: 500;
+			}
+			.value {
+				width: 55%;
+				float: right;
+			}
+			a.value {
+				font-size: 14px;
+				color: rgba(0,0,0,.54);
+				&:hover {
+					cursor: pointer;
+					color: rgba(0,0,0,.54);
+				}
+			}
+		}
+	}
+}
+
+.pdf {
+	.admin_uni_label {
+		margin-right: 20px;
+	}
+	.change_item_delete {
+		margin-right: 146px;
+		margin-top: 40px;
+	}
+	.title {
+
+	}
+}
