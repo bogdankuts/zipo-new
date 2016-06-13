@@ -13,4 +13,18 @@ class Article extends BaseModel {
 		$articles = $articles->get();
 		return $articles;
 	}
+
+	public static function noTitleArticles() {
+		$articles = Article::where('meta_title', '');
+		$articles = $articles->orderBy('weight', 'DESC');
+		$articles = $articles->get();
+		return $articles;
+	}
+
+	public static function noDescriptionArticles() {
+		$articles = Article::where('meta_description', '');
+		$articles = $articles->orderBy('weight', 'DESC');
+		$articles = $articles->get();
+		return $articles;
+	}
 }

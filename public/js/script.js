@@ -152,12 +152,17 @@ $('.js_item_remove').on('click', function(e) {
 $('.pay_radio').click(function() {
 	if($('#physic').is(':checked')) {
 		$('.requisites').slideUp();
-		if ($('#delivery').val() !== 'seld') {
+		if ($('#delivery').val() !== 'self') {
 			$('.address').slideDown();
 		}
+		$('.payment_method_jura').slideUp();
+		$('.payment_method_physic').slideDown();
+
 	} else {
 		$('.address').slideUp();
 		$('.requisites').slideDown();
+		$('.payment_method_jura').slideDown();
+		$('.payment_method_physic').slideUp();
 	}
 });
 $('#delivery').on('change', function() {

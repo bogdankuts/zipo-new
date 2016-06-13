@@ -46,6 +46,11 @@
                         </tbody>
                     </table>
                 </div>
+				<div class="mdl-card__actions mdl-card--border">
+					<a href="/admin/detailed_user?user_id={{$client->user_id}}" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+						Подробнее
+					</a>
+				</div>
             </div>
         @endforeach
     </div>

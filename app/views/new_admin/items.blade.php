@@ -28,12 +28,11 @@
 				@endif
 			@endif
 		</h2>
-		<p class="hidden" id="categoryActive">{{$current->category}}</p>
-		<p class="hidden" id="subcategoryActive">{{$current->subcat_id}}</p>
+		@if ($env !=='byproducer' && $env !=='search')
+			<p class="hidden" id="categoryActive">{{$current->category}}</p>
+			<p class="hidden" id="subcategoryActive">{{$current->subcat_id}}</p>
+		@endif
 		<div class="admin_main_content admin_main_content_items">
-			@if ($env != 'catalog_admin' and $env!= 'byproducer' )
-				<hr class="main_hr">
-			@endif
 			@include('partials/items_sorting')
 
 			@foreach ($items as $item)
@@ -140,8 +139,16 @@
 				</div>
 			</div>
 		</div>
+		@include('new_admin/partials/items_pagination')
 	</div>
-
+	<div class="add_btn" id="add_btn">
+		<a href="/admin/change_item" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+			<i class="material-icons">add</i>
+		</a>
+	</div>
+	<div class="mdl-tooltip mdl-tooltip--top" for="add_btn">
+		Добавить товар
+	</div>
 @stop
 
 @section('specific_page_js')

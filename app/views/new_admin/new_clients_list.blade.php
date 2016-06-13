@@ -40,7 +40,6 @@
                             </td>
                         </tr>
                         <tr>
-                        <tr>
                             <td class="mdl-data-table__cell--non-numeric">Форма собственности</td>
                             <td>
                                 @if ($client->form_of_business === 'jura')
@@ -53,6 +52,11 @@
                         </tbody>
                     </table>
                 </div>
+				<div class="mdl-card__actions mdl-card--border">
+					<a href="/admin/detailed_client?client_id={{$client->client_id}}" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+						Подробнее
+					</a>
+				</div>
             </div>
         @endforeach
     </div>

@@ -31,80 +31,11 @@ Route::get('/all_pdf/{producer}', "PdfController@all_pdf_by_prod");
 Route::get('/all_pdf/{producer}/{subcat}', "PdfController@all_pdf_by_cat");
 Route::get('/one_pdf', "PdfController@one_pdf");
 
-// Route::post('/delete_file_from_server', 'MainController@delete_file_from_server');
-
-// ADMIN OLD CONTROLLER
-Route::get('/admin_old', 'AdminController@admin');
-Route::post('/admin_old_login', 'AdminController@admin_login');
-Route::group(['prefix'=>'/admin_old', 'before'=>'auth2'], function() {
-	Route::post('/set_discount', 'AdminController@set_discount');
-	Route::post('/set_eur_rate', 'AdminController@set_eur_rate');
-	Route::get('/search', 'AdminController@search');
-	Route::post('/import', 'AdminController@import');
-	Route::post('/admin_logout', 'AdminController@admin_logout');
-	Route::get('/catalog', 'AdminController@catalog');
-	Route::get('/producers/{producer_title}', 'AdminController@byproducer');
-
-	// PDFS
-	Route::get('/list_pdf', 'PdfController@list_pdf');
-	Route::post('/delete_pdf', 'PdfController@delete_pdf');
-	Route::get('/item_pdfs', 'PdfController@item_pdfs');
-	Route::post('/import_pdf', 'PdfController@load_pdf');
-	Route::post('/update_pdf', 'PdfController@update_pdf');
-
-	// ARTICLE
-	Route::get('/articles', 'AdminController@articles');
-	Route::get('/change_article', 'AdminController@change_article');
-	Route::post('/update_article', 'AdminController@update_article');
-	Route::post('/delete_article', 'AdminController@delete_article');
-
-	// SUBCAT
-	Route::get('/subcats', 'AdminController@subcats');
-	Route::post('/update_subcat', 'AdminController@update_subcat');
-	Route::post('/delete_subcat', 'AdminController@delete_subcat');
-
-	// PRODUCER
-	Route::get('/producers', 'AdminController@producers');
-	Route::get('/producers_temp', 'AdminController@producer_update_img');
-	Route::post('/update_producer', 'AdminController@update_producer');
-	Route::post('/delete_producer', 'AdminController@delete_producer');
-
-	// AJAX
-	Route::post('/ajax_change_subcat', 'AdminController@ajax_change_subcat');
-	Route::post('/ajax_change_pdf', 'PdfController@ajax_change_pdf');
-	Route::post('/ajax_set_special', 'AdminController@ajax_set_special');
-	Route::post('/ajax_set_hit', 'AdminController@ajax_set_hit');
-	Route::post('/ajax_set_procurement', 'AdminController@ajax_set_procurement');
-	Route::post('/ajax_delete_group', 'AdminController@ajax_delete_group');
-	Route::post('/ajax_get_subcats', 'AdminController@ajax_get_subcats');
-	Route::post('/ajax_item_image', 'AdminController@ajax_item_image');
-	
-	// ITEM
-	Route::get('/change_item', 'AdminController@change_item');
-	Route::post('/update_item', 'AdminController@update_item');
-	Route::post('/delete_item', 'AdminController@delete_item');
-	Route::post('/delete_item_from_pdf', 'PdfController@delete_item_from_pdf');
-	Route::get('/{category}/{subcat}', 'AdminController@items');
-
-	//ADMINS
-	Route::post('/new_admin', 'AdminController@new_admin');
-	Route::get('/list_admins', 'AdminController@list_admins');
-	Route::post('/delete_admin', 'AdminController@delete_admin');
-	Route::post('/update_admin', 'AdminController@update_admin');
-
-	//ORDERS
-
-});
-
-
-
-
-
-
 
 // NEW ADMIN CONTROLLER
 Route::get('/admin', array('as' => 'dashboard', 'uses' => 'NewAdminController@admin'));
-//Route::post('/admin_login', 'AdminController@admin_login');
+Route::post('/admin_login', 'NewAdminController@adminLogin');
+Route::post('/admin/admin_logout', 'NewAdminController@adminLogout');
 Route::group(['prefix'=>'/admin', 'before'=>'auth2'], function() {
 	//DASHBOARD
 	Route::get('/new-admins-after-last-visit/{last_visit}', array('as' => 'new_admins_after', 'uses' => 'NewAdminController@newAdminsAfterVisit'));
@@ -115,13 +46,22 @@ Route::group(['prefix'=>'/admin', 'before'=>'auth2'], function() {
 	Route::post('/toggle_item_hit/{id}', 'NewAdminController@toggleItemHit');
 	Route::post('/mark-order-as-done/{id}', 'NewAdminController@markOrderAsDone');
 	Route::get('/catalog', array('as' => 'catalog_admin', 'uses' => 'NewAdminController@catalog'));
+	Route::post('/set_discount', 'NewAdminController@setDiscount');
+	Route::post('/set_eur_rate', 'NewAdminController@setEurRate');
+	Route::post('/import', 'NewAdminController@import');
+	Route::get('/search', array('as' => 'search', 'uses' => 'NewAdminController@search'));
+
 
 	// ITEM
+	Route::get('/producers/{producer_title}', array('as' => 'items_admin', 'uses' => 'NewAdminController@byProducer'));
 	Route::get('/{category}/{subcat}', array('as' => 'items_admin', 'uses' => 'NewAdminController@items'));
+	Route::get('/no_title_items', array('as' => 'items_admin', 'uses' => 'NewAdminController@noTitleItems'));
+	Route::get('/no_description_items', array('as' => 'items_admin', 'uses' => 'NewAdminController@noDescriptionItems'));
 	Route::get('/change_item', array('as' => 'items_admin_change', 'uses' => 'NewAdminController@changeItem'));
 	Route::post('/update_item', 'NewAdminController@updateItem');
 	Route::post('/delete_item', 'NewAdminController@deleteItem');
 	Route::post('/delete_item_from_pdf', 'PdfController@delete_item_from_pdf');
+
 
 	// AJAX
 	Route::post('/ajax-change-subcategory', 'NewAdminController@changeSubcategory');
@@ -136,6 +76,8 @@ Route::group(['prefix'=>'/admin', 'before'=>'auth2'], function() {
 
 	// ARTICLE
 	Route::get('/articles', array('as' => 'articles_admin', 'uses' => 'NewAdminController@articles'));
+	Route::get('/no_title_articles', array('as' => 'articles_admin', 'uses' => 'NewAdminController@noTitleArticles'));
+	Route::get('/no_description_articles', array('as' => 'articles_admin', 'uses' => 'NewAdminController@noDescriptionArticles'));
 	Route::get('/change_article', array('as' => 'article_admin_change', 'uses' => 'NewAdminController@changeArticle'));
 	Route::post('/update_article', array('as' => 'article_admin_change', 'uses' => 'NewAdminController@updateArticle'));
 	Route::post('/delete_article', 'NewAdminController@deleteArticle');
@@ -184,101 +126,18 @@ Route::group(['prefix'=>'/admin', 'before'=>'auth2'], function() {
 	//Route::get('/item_pdfs', 'PdfController@item_pdfs');
 
 	//ADMINS
+	Route::get('/change_admin', array('as' => 'change_admin', 'uses' => 'NewAdminController@changeAdmin'));
 	Route::get('/list_admins', array('as' => 'admins', 'uses' => 'NewAdminController@admins'));
-	//Route::post('/new_admin', 'AdminController@new_admin');
-	//Route::post('/delete_admin', 'AdminController@delete_admin');
-	//Route::post('/update_admin', 'AdminController@update_admin');
+	Route::post('/update_admin', 'NewAdminController@updateAdmin');
+	Route::post('/ajax-delete-admin', 'NewAdminController@ajaxDeleteAdmin');
+	Route::post('/delete_admin', 'NewAdminController@deleteAdmin');
+	//Route::post('/new_admin', array('as' => 'new_admin', 'uses' => 'NewAdminController@newAdmin'));
 
-
-
-
-
-	//	Route::post('/set_discount', 'AdminController@set_discount');
-	//	Route::post('/set_eur_rate', 'AdminController@set_eur_rate');
-	//	Route::get('/search', 'AdminController@search');
-	//	Route::post('/import', 'AdminController@import');
-	//	Route::post('/admin_logout', 'AdminController@admin_logout');
-//	Route::get('/producers/{producer_title}', 'AdminController@byproducer');
-//
-//	// PDFS
-//	Route::get('/list_pdf', 'PdfController@list_pdf');
-//	Route::post('/delete_pdf', 'PdfController@delete_pdf');
-//	Route::get('/item_pdfs', 'PdfController@item_pdfs');
-//	Route::post('/import_pdf', 'PdfController@load_pdf');
-//	Route::post('/update_pdf', 'PdfController@update_pdf');
-//
-//	// ARTICLE
-//	Route::get('/articles', 'AdminController@articles');
-//	Route::get('/change_article', 'AdminController@change_article');
-//	Route::post('/update_article', 'AdminController@update_article');
-//	Route::post('/delete_article', 'AdminController@delete_article');
-//
-//	// SUBCAT
-//	Route::get('/subcats', 'AdminController@subcats');
-//	Route::post('/update_subcat', 'AdminController@update_subcat');
-//	Route::post('/delete_subcat', 'AdminController@delete_subcat');
-//
-//	// PRODUCER
-//	Route::get('/producers', 'AdminController@producers');
-//	Route::get('/producers_temp', 'AdminController@producer_update_img');
-//	Route::post('/update_producer', 'AdminController@update_producer');
-//	Route::post('/delete_producer', 'AdminController@delete_producer');
-//
-//	// AJAX
-//	Route::post('/ajax_change_subcat', 'AdminController@ajax_change_subcat');
-//	Route::post('/ajax_change_pdf', 'PdfController@ajax_change_pdf');
-//	Route::post('/ajax_set_special', 'AdminController@ajax_set_special');
-//	Route::post('/ajax_set_hit', 'AdminController@ajax_set_hit');
-//	Route::post('/ajax_set_procurement', 'AdminController@ajax_set_procurement');
-//	Route::post('/ajax_delete_group', 'AdminController@ajax_delete_group');
-//	Route::post('/ajax_get_subcats', 'AdminController@ajax_get_subcats');
-//	Route::post('/ajax_item_image', 'AdminController@ajax_item_image');
-//
-//	// ITEM
-//	Route::get('/change_item', 'AdminController@change_item');
-//	Route::post('/update_item', 'AdminController@update_item');
-//	Route::post('/delete_item', 'AdminController@delete_item');
-//	Route::post('/delete_item_from_pdf', 'PdfController@delete_item_from_pdf');
-//	Route::get('/{category}/{subcat}', 'AdminController@items');
-//
-//	//ADMINS
-//	Route::post('/new_admin', 'AdminController@new_admin');
-//	Route::get('/list_admins', 'AdminController@list_admins');
-//	Route::post('/delete_admin', 'AdminController@delete_admin');
-//	Route::post('/update_admin', 'AdminController@update_admin');
-
-	//ORDERS
-
+	Route::get('/about', array('as' => 'about', 'uses' => 'NewAdminController@about'));
 });
+
+
 Route::get('/{category}/{subcat}', 'MainController@prods_by_subcat');
 Route::get('/{category}/{subcat}/{producer}/items', 'MainController@items_by_subcat_prod');
 Route::get('/{category}/{subcat}/{item_title}', 'MainController@item');
-
-//Route::get('run_watermark_stamping', function() {
-//	// $filenames = read_dir(dir_path('photos'));
-//	// $watermark_path = dir_path('icons').dir_sep().'watermark.png';
-//	// $watermark = Image::make($watermark_path);
-//	// $watermark->backup();
-//
-//	// foreach ($filenames as $filename) {
-//	// 	$watermark->reset();
-//	// 	$image = Image::make(dir_path('photos').dir_sep().$filename);
-//
-//	// 	// resize watermark
-//	// 	$width = $image->width();
-//	// 	$height = $image->height();
-//	// 	// $watermark->resize($width, $height);
-//	// 	$watermark->fit($width, $height);
-//
-//	// 	$image->insert($watermark, 'center', 0, 0);
-//	// 	$image->save();
-//	// }
-//
-//	// // Image::canvas(800, 600, '#ccc');
-//	// // $img = Image::make('foo.jpg')->resize(300, 200);
-//	// // return $img->response('jpg');
-//
-//	// // $img->save('public/bar.jpg');
-//	// // Image::make('public/foo.jpg')->resize(320, 240)->insert('public/watermark.png');
-//});
 

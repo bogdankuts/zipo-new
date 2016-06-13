@@ -5,9 +5,17 @@
 @extends('partials/right_sidebar')
 
 @section('meta')
-	<title>Зип Общепит - {{ $article->title }}</title>
+	@if($article->meta_title !== '')
+		<title>Зип Общепит - {{ $article->meta_title }}</title>
+	@else
+		<title>Зип Общепит - {{ $article->title }}</title>
+	@endif
 	<meta name='keywords' content='{{ $article->title }} - Зип Общепит'>
-	<meta name='description' content='{{ $article->title }}  - Зип Общепит'>
+	@if($article->meta_description !== '')
+		<meta name='description' content='{{ $article->meta_description }}  - Зип Общепит'>
+	@else
+		<meta name='description' content='{{ $article->title }}  - Зип Общепит'>
+	@endif
 @stop
 
 @section('body')

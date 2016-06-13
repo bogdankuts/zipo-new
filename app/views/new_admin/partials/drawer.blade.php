@@ -29,8 +29,11 @@
             <a class="mdl-navigation__link @if ( $env == 'create_pdf' || $env == 'change_pdf' ) active_nav @endif" href="/admin/create_pdf">Добавить деталировку</a>
             <div class="mdl-navigation__devider"></div>
 
-            <a class="mdl-navigation__link @if ( $env == 'admins') active_nav @endif" href="/admin/list_admin">Администраторы</a>
-            <a class="mdl-navigation__link" href="">Добавить администратора</a>
-        </nav>
+            <a class="mdl-navigation__link @if ( $env == 'admins') active_nav @endif" href="/admin/list_admins">Администраторы</a>
+            <a class="mdl-navigation__link @if ( $env == 'new_admin' || $env == 'change_admin') active_nav @endif" href="/admin/change_admin">Добавить администратора</a>
+			<div class="mdl-navigation__devider"></div>
+
+			<a class="mdl-navigation__link" href="/admin/about"><i class="material-icons">help_outline</i></a>
+		</nav>
     </div>
 @stop

@@ -226,4 +226,9 @@ class MainController extends BaseController {
 			'env' 		=> 'search'
 		]);
 	}
+
+	public function temp() {
+		return View::make('temp')->with([
+		]);
+	}
 }

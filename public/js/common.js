@@ -63,21 +63,21 @@ $categories.on('click', function() {
 	HIDING = false;						
 });
 
-// MAGNIFIC POPUP
-//if ($('.login_button').length) {
-//	$('.login_button').magnificPopup({
-//		items: {
-//			src: '.header_login', // CSS selector of an element on page that should be used as a popup
-//			type: 'inline'
-//		},
-//		removalDelay: 500, //delay removal by X to allow out-animation
-//		callbacks: {
-//			beforeOpen: function() {
-//				this.st.mainClass = this.st.el.attr('data-effect');
-//			}
-//		},
-//	});
-//}
+//MAGNIFIC POPUP
+if ($('.login_button').length) {
+	$('.login_button').magnificPopup({
+		items: {
+			src: '.header_login', // CSS selector of an element on page that should be used as a popup
+			type: 'inline'
+		},
+		removalDelay: 500, //delay removal by X to allow out-animation
+		callbacks: {
+			beforeOpen: function() {
+				this.st.mainClass = this.st.el.attr('data-effect');
+			}
+		},
+	});
+}
 //
 //// admin add subcategory
 //	$('.admin_one_cat_add').magnificPopup({

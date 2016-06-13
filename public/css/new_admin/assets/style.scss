@@ -20,6 +20,14 @@ a {
 	margin-top: 3px;
 	margin-bottom: 3px;
 }
+.search_submit {
+	display: none;
+}
+.logout_link {
+	&:hover {
+		cursor: pointer;
+	}
+}
 .main_heading {
 	//margin-left: 70px;
 	text-align: center;
@@ -33,6 +41,7 @@ a {
 }
 .title {
 	text-align: center;
+	width: 100%;
 }
 .items,
 .articles {
@@ -44,6 +53,7 @@ a {
 	.mdl-button {
 		display: table;
 		margin: auto;
+		margin-top: 40px;
 	}
 }
 
@@ -53,7 +63,13 @@ a {
 }
 .items_more_statistic_block,
 .articles_more_statistic_block {
-	display: none;
+	//visibility: hidden;
+	//display: none;
+	//.canvas {
+	//	display: block;
+	//	width: 200px;
+	//	height: 200px;
+	//}
 }
 .mdl-menu__item a {
 	color: rgba(0,0,0,.87);
@@ -69,6 +85,11 @@ a {
 		&:hover {
 			text-decoration: none;
 		}
+	}
+	.mdl-button {
+		display: table;
+		margin: auto;
+		margin-top: 40px;
 	}
 }
 .mdl-list__item-secondary-action {
@@ -129,6 +150,19 @@ a {
 	}
 	.mdl-badge {
 		float: left;
+	}
+}
+.eur_rate,
+.set_discount {
+	padding: 20px;
+	h4 {
+		margin-top: 0;
+	}
+	.mdl-textfield {
+		margin-right: 30px;
+	}
+	.import_btn {
+		margin-top: 20px;
 	}
 }
 footer {
@@ -246,10 +280,12 @@ footer {
 	font-size: 24px;
 	color: $primary;
 	margin-left: 25px;
+	width: 100%;
+
 }
 .head_right {
-	float: right;
-	margin-right: 25px;
+	//float: right;
+	//margin-right: 25px;
 }
 //ITEMS
 .admin_producer_one_form {
@@ -648,7 +684,7 @@ footer {
 	position: fixed;
 	bottom: 50px;
 	right: 2%;
-	z-index: 2;
+	z-index: 9999;
 	a {
 		box-shadow: 0 0 4px rgba(0,0,0,.14),0 4px 8px rgba(0,0,0,.28);
 	}
@@ -1055,6 +1091,7 @@ footer {
 				width: 70%;
 				float: right;
 				.mdl-data-table {
+					white-space: initial;
 					td,
 					th {
 						text-align: left;
@@ -1139,5 +1176,69 @@ footer {
 	}
 	.title {
 
+	}
+}
+
+
+//ADMINS
+.submit_admin {
+	margin-top: 40px;
+}
+
+//LOGIN
+.login_page {
+	background-image: url('../../img/markup/login.jpg');
+	background-size: cover;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	.filter {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background-color: $secondary;
+		opacity: .6;
+	}
+	.login_card {
+		display: table;
+		margin: auto;
+		margin-top: 70%;
+		padding: 20px;
+		z-index: 99999;
+		h4 {
+			text-align: center;
+			width: 100%;
+		}
+		.submit_login {
+			float: right;
+		}
+	}
+}
+
+//ABOUT
+.about {
+	.to_clients {
+		display: table;
+		margin: auto;
+		width: 50%;
+		margin-top: 40px;
+		font-style: italic;
+	}
+	.sub {
+		width: 45%;
+		float: right;
+	}
+	.current_release,
+	.next_release {
+		font-size: 18px;
+		margin-top: 30px;
+		padding: 20px;
+		h4 {
+			width: 100%;
+		}
 	}
 }

@@ -1701,3 +1701,17 @@ body > img {
 .order_form .address {
 	display: none;
 }
+.payment_method_physic {
+	display: none;
+}
+
+.temp {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background-image: url(../img/markup/temp.jpg);
+	-webkit-background-size: cover;
+	background-size: cover;
+}

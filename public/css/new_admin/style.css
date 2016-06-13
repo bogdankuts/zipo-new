@@ -15,6 +15,12 @@ a:hover {
   margin-top: 3px;
   margin-bottom: 3px; }
 
+.search_submit {
+  display: none; }
+
+.logout_link:hover {
+  cursor: pointer; }
+
 .main_heading {
   text-align: center;
   width: 100%; }
@@ -26,7 +32,8 @@ a:hover {
   padding-bottom: 30px; }
 
 .title {
-  text-align: center; }
+  text-align: center;
+  width: 100%; }
 
 .items,
 .articles {
@@ -38,15 +45,12 @@ a:hover {
   .items .mdl-button,
   .articles .mdl-button {
     display: table;
-    margin: auto; }
+    margin: auto;
+    margin-top: 40px; }
 
 .graph {
   display: table;
   margin: auto; }
-
-.items_more_statistic_block,
-.articles_more_statistic_block {
-  display: none; }
 
 .mdl-menu__item a {
   color: rgba(0, 0, 0, 0.87); }
@@ -59,6 +63,10 @@ a:hover {
     margin: auto; }
     .one_graph a:hover {
       text-decoration: none; }
+  .one_graph .mdl-button {
+    display: table;
+    margin: auto;
+    margin-top: 40px; }
 
 .mdl-list__item-secondary-action:focus {
   outline: none; }
@@ -108,6 +116,19 @@ a:hover {
     width: auto; }
   .one_notification .mdl-badge {
     float: left; }
+
+.eur_rate,
+.set_discount {
+  padding: 20px; }
+  .eur_rate h4,
+  .set_discount h4 {
+    margin-top: 0; }
+  .eur_rate .mdl-textfield,
+  .set_discount .mdl-textfield {
+    margin-right: 30px; }
+  .eur_rate .import_btn,
+  .set_discount .import_btn {
+    margin-top: 20px; }
 
 footer {
   padding: 30px 20px;
@@ -196,11 +217,8 @@ footer {
 .admin_uni_heading {
   font-size: 24px;
   color: #f44336;
-  margin-left: 25px; }
-
-.head_right {
-  float: right;
-  margin-right: 25px; }
+  margin-left: 25px;
+  width: 100%; }
 
 .admin_producer_one_form {
   width: 100%; }
@@ -529,7 +547,7 @@ footer {
   position: fixed;
   bottom: 50px;
   right: 2%;
-  z-index: 2; }
+  z-index: 9999; }
   .add_btn a {
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.14), 0 4px 8px rgba(0, 0, 0, 0.28); }
   .add_btn:hover a {
@@ -816,9 +834,11 @@ footer {
       .client .orders .one_order .items_part {
         width: 70%;
         float: right; }
-        .client .orders .one_order .items_part .mdl-data-table td,
-        .client .orders .one_order .items_part .mdl-data-table th {
-          text-align: left; }
+        .client .orders .one_order .items_part .mdl-data-table {
+          white-space: initial; }
+          .client .orders .one_order .items_part .mdl-data-table td,
+          .client .orders .one_order .items_part .mdl-data-table th {
+            text-align: left; }
 
 .users .one_client .mdl-card__title {
   height: 120px; }
@@ -867,5 +887,54 @@ footer {
 .pdf .change_item_delete {
   margin-right: 146px;
   margin-top: 40px; }
+
+.submit_admin {
+  margin-top: 40px; }
+
+.login_page {
+  background-image: url("../../img/markup/login.jpg");
+  background-size: cover;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0; }
+  .login_page .filter {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ffab40;
+    opacity: .6; }
+  .login_page .login_card {
+    display: table;
+    margin: auto;
+    margin-top: 70%;
+    padding: 20px;
+    z-index: 99999; }
+    .login_page .login_card h4 {
+      text-align: center;
+      width: 100%; }
+    .login_page .login_card .submit_login {
+      float: right; }
+
+.about .to_clients {
+  display: table;
+  margin: auto;
+  width: 50%;
+  margin-top: 40px;
+  font-style: italic; }
+.about .sub {
+  width: 45%;
+  float: right; }
+.about .current_release,
+.about .next_release {
+  font-size: 18px;
+  margin-top: 30px;
+  padding: 20px; }
+  .about .current_release h4,
+  .about .next_release h4 {
+    width: 100%; }
 
 /*# sourceMappingURL=style.css.map */

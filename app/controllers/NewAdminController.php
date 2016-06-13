@@ -84,6 +84,18 @@ class NewAdminController extends BaseController {
 			case 'admins':
 				$title = "Администраторы";
 				break;
+			case 'new_admin':
+				$title = "Администратор";
+				break;
+			case 'change_admin':
+				$title = "Администратор";
+				break;
+			case 'search':
+				$title = "Результаты поиска";
+				break;
+			case 'about':
+				$title = "Версия 2.0.5";
+				break;
 		}
 
 		return $title;
@@ -186,7 +198,10 @@ class NewAdminController extends BaseController {
 	}
 
 	private function getNewOrders($last_visit) {
-		$orders = Order::whereBetween('date', array($last_visit, date('Y-m-d')))->get();
+		$orders = new Order;
+		$orders = $orders->getNewOrders($last_visit);
+		//print_r($orders);
+		//exit;
 
 		return $orders;
 	}
@@ -200,7 +215,9 @@ class NewAdminController extends BaseController {
 
 	private function getNewUsers($last_visit) {
 		$newUsers = new User;
-		$newUsers = $newUsers->whereBetween('timestamp', array($last_visit, date('Y-m-d')))->get();
+		$newUsers = $newUsers
+			->whereBetween('timestamp', array($last_visit, date('Y-m-d', strtotime('tomorrow'))))
+			->get();
 
 		return $newUsers;
 	}
@@ -214,6 +231,7 @@ class NewAdminController extends BaseController {
 
 	private function getNewDiscount($last_visit) {
 		$discount = Setting::getFullDiscount();
+
 		$discount_changed_date = strtotime($discount->changed_at);
 		$last_visit = strtotime($last_visit);
 
@@ -236,7 +254,7 @@ class NewAdminController extends BaseController {
 
 			$this->getNotifications($last_visit);
 
-//			$this->updateLastAdminVisit(); TODO:: uncomment this
+			$this->updateLastAdminVisit();
 
 			return View::make('new_admin/dashboard')->with([
 					'env' 				            => 'dashboard',
@@ -254,11 +272,69 @@ class NewAdminController extends BaseController {
 					'recentOrders'                  => $this->getRecentOrders(),
 					'recentDoneOrders'              => $this->getRecentDoneOrders(),
 					'notifications'                 => $this->getNotifications($last_visit),
-					'lastVisit'                     => $last_visit
+					'lastVisit'                     => $last_visit,
+			        'discount'                      => Setting::getDiscount(),
+					'current_EUR_rate'              => get_EUR_rate(),
 
 			]);
 		} else {
 			return View::make('new_admin/login');
+		}
+	}
+
+	public function setDiscount() {
+		$discount = Setting::setDiscount();
+
+		return Redirect::to('/admin')
+			->with('message', 'Скидка для зарегестрированных пользователей: '.$discount.'%.');
+	}
+
+	public function setEurRate() {
+		$rate = str_replace(',', '.', Input::get('rate'));
+		$left = minutes_left();
+		Cache::put('EUR_rate', $rate, $left);
+
+		return Redirect::to('/admin')
+			->with('message', 'Курс евро на текущий день установлен: '.$rate.' рублей за 1 евро.');
+	}
+
+	//TODO:: do not work! Need to recreate and rewrite
+	public function import() {
+		if (Input::hasFile('excel')) {
+			$file = Input::file('excel');
+			$destinationPath = HELP::$EXCEL_IMPORT_DIR;
+			$extension = $file->getClientOriginalExtension();
+			if ($extension != 'xlsx') {
+				return Redirect::to('/admin')->withErrors('Выбранный файл должен иметь формат .xlsx');
+			}
+			// $filename = $file->getClientOriginalName(); // full
+			$filename = 'excel.'.$extension;
+			$file->move($destinationPath, $filename);
+
+			// returns import_status view
+			return App::make('ExcelController')->excelImport();
+		} else {
+			return Redirect::to('/admin')->withErrors('Excel файл не выбран!');
+		}
+	}
+
+	public function adminLogout() {
+		Auth::admin()->logout();
+		return Redirect::to('/admin');
+	}
+
+	public function adminLogin() {
+		$creds = [
+			'password'	=> Input::get('password'),
+			'login' 	=> Input::get('login')
+		];
+
+		$pass = Auth::admin()->attempt($creds, true);
+		if ($pass) {
+			return Redirect::to('admin');
+		} else {
+			return Redirect::to('/admin')
+			               ->withErrors('Неверный логин или пароль!');
 		}
 	}
 
@@ -319,6 +395,57 @@ class NewAdminController extends BaseController {
 			'pageTitle' => $this->definePageTitle(),
 			'items'     => Item::getItemsForAdminCatalog()
 		]);
+	}
+
+	public function noTitleItems() {
+		return View::make('new_admin/items')->with([
+			'pdfs'		=> Pdf::all(),
+			'current'	=> '',
+			'env' 		=> 'search',
+			'pageTitle' => $this->definePageTitle(),
+			'items'     => Item::getNoTitleItems()
+		]);
+	}
+
+	public function noDescriptionItems() {
+		return View::make('new_admin/items')->with([
+			'pdfs'		=> Pdf::all(),
+			'current'	=> '',
+			'env' 		=> 'search',
+			'pageTitle' => $this->definePageTitle(),
+			'items'     => Item::getNoDescriptionItems()
+		]);
+	}
+
+	//TODO::refactor(get category and subcat)
+	public function byProducer() {
+
+		return View::make('new_admin/items')->with([
+			'pdfs'		=> Pdf::all(),
+			'current'	=> Producer::find(Input::get('producer_id')),
+			'env' 		=> 'byproducer',
+			'pageTitle' => $this->definePageTitle(),
+			'items' 	=> Item::getItemsByProducerAdmin(),
+		]);
+	}
+
+	//TODO::refactor(get category and subcat)
+	public function search() {
+		$items = Item::getItemsByQueryAdmin();
+		$query = Input::get('query');
+
+		if ($items->count() == 0) {
+			return Redirect::to('/admin')
+				->withErrors('По запросу: "'.$query.'" ничего не найдено.');
+		} else {
+			return View::make('new_admin/items')->with([
+				'pdfs'		=> Pdf::all(),
+				'items'     => Item::getItemsByQueryAdmin(),
+				'current'	=> $query,
+				'env' 		=> 'search',
+				'pageTitle' => $this->definePageTitle(),
+			]);
+		}
 	}
 
 	public function markOrderAsDone($id) {
@@ -434,13 +561,12 @@ class NewAdminController extends BaseController {
 	}
 
 	private function convertPriceToEur($category, $price, $currency) {
-		$categories = en_categories();
-		if (in_array($category, $categories) and $currency  == 'РУБ') {
+		//$categories = en_categories();
+		//if (in_array($category, $categories) and $currency  == 'РУБ') {
 			$result['currency'] = 'EUR';
 			$result['price'] = ceil($price/get_EUR_rate()*100)/100;
-		}
-
-		return $result;
+			return $result;
+		//}
 	}
 
 	//TODO:: refactor this function(works correctly, but looks bad)
@@ -557,17 +683,23 @@ class NewAdminController extends BaseController {
 		return  Validator::make($fields, $rules);
 	}
 
+	//TODO::find the way to refactor this piece of code to abstract EUR conversion
 	public function updateItem() {
 		$item_id = Input::get('item_id');
 		$fields = $this->formFields();
-		$eurPrice = $this->convertPriceToEur($fields['category'], $fields['price'], $fields['currency']);
-		$fields['price'] = $eurPrice['price'];
-		$fields['currency'] = $eurPrice['currency'];
+		$categories = en_categories();
+
+		if (in_array($fields['category'], $categories) and $fields['currency']  == 'РУБ') {
+			$eurPrice = $this->convertPriceToEur($fields['category'], $fields['price'], $fields['currency']);
+			$fields['price'] = $eurPrice['price'];
+			$fields['currency'] = $eurPrice['currency'];
+		}
+
 
 		$validator = $this->createValidator($fields, $item_id);
 
 		if ($validator->fails()) {
-			$this->error('Товар с таким кодом уже существует. Код должен быть уникальным!');
+			return $this->error('Товар с таким кодом уже существует. Код должен быть уникальным!');
 		} else {
 			$item = $this->updateOrCreateItem($fields, $item_id);
 			return $this->successMessage($item, $item_id);
@@ -637,6 +769,22 @@ class NewAdminController extends BaseController {
 		return View::make('new_admin/articles')->with([
 			'env' 		=> 'articles',
 			'articles'	=> Article::readAllArticles(),
+			'pageTitle' => $this->definePageTitle(),
+		]);
+	}
+
+	public function noTitleArticles() {
+		return View::make('new_admin/articles')->with([
+			'env' 		=> 'articles',
+			'articles'	=> Article::noTitleArticles(),
+			'pageTitle' => $this->definePageTitle(),
+		]);
+	}
+
+	public function noDescriptionArticles() {
+		return View::make('new_admin/articles')->with([
+			'env' 		=> 'articles',
+			'articles'	=> Article::noDescriptionArticles(),
 			'pageTitle' => $this->definePageTitle(),
 		]);
 	}
@@ -1088,6 +1236,85 @@ class NewAdminController extends BaseController {
 		} else {
 			return HELP::__delete('Pdf', 'Деталировка %s удалена!', 'producer', 'back');
 		}
+	}
+
+	public function admins() {
+
+		if(Auth::admin()->get()->master == '1') {
+			return View::make('new_admin/admins_list')
+				->with([
+					'admins' => Cred::all(),
+					'pageTitle' => $this->definePageTitle(),
+					'env' 		=> 'admins',
+				]);
+		} else {
+			return Redirect::to('/admin')
+				->withErrors('У Вас нет прав для совершения этого действия');
+		}
+	}
+
+	public function changeAdmin() {
+		if(Auth::admin()->get()->master == '1') {
+			$admin = Cred::find(Input::get('admin_id'));
+
+			return View::make('new_admin/change_admin')
+			           ->with([
+				           'admin'      => $admin,
+				           'pageTitle'  => $this->definePageTitle(),
+				           'env' 	    => 'new_admin',
+			           ]);
+		} else {
+			return Redirect::to('/admin')
+			               ->withErrors('У Вас нет прав для совершения этого действия');
+		}
+	}
+
+	public function updateAdmin() {
+		$fields = Input::all();
+		$admin_id = Input::get('admin_id');
+		unset($fields['admin_id']);
+
+		if($fields['new_password'] !== '') {
+			$fields['password'] = Hash::make($fields['new_password']);
+			unset($fields['new_password']);
+		} else {
+			unset($fields['new_password']);
+		}
+
+		$fields['added_at'] = date('Y-m-d');
+
+		if(Auth::admin()->get()->master == '1') {
+			Cred::updateOrCreate(['cred_id' => $admin_id], $fields);
+			return Redirect::back()->with('message', 'Администратор изменен успешно.');
+		} else {
+			return Redirect::to('/admin')->withErrors('У Вас нет прав для совершения этого действия');
+		}
+	}
+
+	public function ajaxDeleteAdmin() {
+		if(Auth::admin()->get()->master == '1') {
+			Cred::destroy(Input::get('admin_id'));
+		} else {
+			return Redirect::to('/admin')
+				->withErrors('У Вас нет прав для совершения этого действия');
+		}
+	}
+
+	public function deleteAdmin() {
+		if(Auth::admin()->get()->master == '1') {
+			Cred::destroy(Input::get('admin_id'));
+			return Redirect::back();
+		} else {
+			return Redirect::to('/admin')
+				->withErrors('У Вас нет прав для совершения этого действия');
+		}
+	}
+
+	public function about() {
+		return View::make('new_admin/about')
+		           ->with([
+			           'pageTitle'  => $this->definePageTitle(),
+		           ]);
 	}
 
 

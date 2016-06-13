@@ -103,7 +103,7 @@
 									@foreach($order->items as $item)
 										<tr>
 											<td class="">{{$item->code}}</td>
-											<td>{{$item->title}}</td>
+											<td width="500">{{$item->title}}</td>
 											<td>
 												@if($item->procurement == '1')
 													В наличии

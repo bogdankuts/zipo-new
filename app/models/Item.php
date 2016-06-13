@@ -94,7 +94,31 @@ class Item extends BaseModel {
 		$items = Item::__items();
 		$items = $items->where('items.subcat_id', $subcat_id);
 		$items = $items->orderBy($sort, $order);
-		$items = $items->get();
+		$items = $items->paginate(50);
+
+		return $items;
+	}
+
+	public static function getNoTitleItems() {
+		$sort = Input::get('sort', 'visits');
+		$order = Input::get('order', 'desc');
+
+		$items = Item::__items();
+		$items = $items->where('items.meta_title', '');
+		$items = $items->orderBy($sort, $order);
+		$items = $items->paginate(50);
+
+		return $items;
+	}
+
+	public static function getNoDescriptionItems() {
+		$sort = Input::get('sort', 'visits');
+		$order = Input::get('order', 'desc');
+
+		$items = Item::__items();
+		$items = $items->where('meta_description', '=', '');
+		$items = $items->orderBy($sort, $order);
+		$items = $items->paginate(50);
 
 		return $items;
 	}
@@ -121,7 +145,7 @@ class Item extends BaseModel {
 		$items = Item::__items();
 		$items = $items->where('items.producer_id', $producer_id);
 		$items = $items->orderBy($sort, $order);
-		$items = $items->paginate('10000');
+		$items = $items->paginate(50);
 
 		return $items;
 	}
@@ -174,8 +198,9 @@ class Item extends BaseModel {
 		$items = $items->where('title', 'like', '%'.$query.'%');
 		$items = $items->orWhere('code', 'like', '%'.$query.'%');
 		$items = $items->orderBy($sort, $order);
+		$items = $items->paginate(25);
 
-		return $items->get();
+		return $items;
 	}
 
 	public static function getSpecialItems() {

@@ -20,12 +20,18 @@ class Setting extends BaseModel implements UserInterface, RemindableInterface{
 		$discount = Input::get('discount');
 		$setting = Setting::find(1);
 		$setting->value = $discount;
+		$setting->changed_at = date('Y-m-d');
+		$setting->changed_by = Input::get('changed_by');
 		$setting->save();
+
+		return $discount;
 	}
 
 	public static function getFullDiscount() {
 		$discount = new Cred;
-		$discount = $discount->join('settings', 'creds.cred_id', '=', 'settings.changed_by')->find(1);
+		$discount = $discount
+			->join('settings', 'creds.cred_id', '=', 'settings.changed_by')
+			->first();
 
 		return $discount;
 	}

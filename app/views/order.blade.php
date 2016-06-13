@@ -80,23 +80,46 @@
                     {{ Form::text('company', null, ['class'=>'change_input change_input_code form-control',]) }}
                 @endif
                 <div class="payment_method">
-                <label for="form_of_business" class="main_label req">Выбирете способ оплаты</label>
-                <div class="radio">
-                    <label>
-                        <input type="radio" name="form" id="jura" value="jura" class="pay_radio" checked>
-                        Юридические лица
-                    </label>
-                </div>
-                <div class="radio">
-                    <label>
-                        <input type="radio" name="form" id="physic" value="physic" class="pay_radio">
-                        Физические лица
-                    </label>
-                </div>
-                <div class="requisites">
-                    {{ Form::label('requisites', 'Реквизиты: ', ['class'=>'main_label req']) }}
-                    {{ Form::file('requisites', ['class'=>'change_input change_input_code form-control',]) }}
-                </div>
+                	<label for="form_of_business" class="main_label req">Выбирете способ оплаты</label>
+					<div class="radio">
+						<label>
+							<input type="radio" name="form" id="jura" value="jura" class="pay_radio" checked>
+							Юридические лица
+						</label>
+					</div>
+					<div class="radio">
+						<label>
+							<input type="radio" name="form" id="physic" value="physic" class="pay_radio">
+							Физические лица
+						</label>
+					</div>
+					<div class="payment_method_jura">
+						<div class="radio">
+							<label>
+								<input type="radio" name="payment_jura" id="jura_pay" value="check" class="pay_radio" checked>
+								Оплата по счету
+							</label>
+						</div>
+					</div>
+					<div class="payment_method_physic">
+						<div class="radio">
+							<label>
+								<input type="radio" name="payment_physic" id="physic_pay_card" value="card" class="pay_radio">
+								Оплата на карту "Сбербанка"(скидка 10%)
+							</label>
+						</div>
+						<div class="radio">
+							<label>
+								<input type="radio" name="payment_physic" id="physic_pay_check" value="physic_check" class="pay_radio" checked>
+								Оплата по счету
+							</label>
+						</div>
+					</div>
+					<div class="requisites">
+						{{ Form::label('requisites', 'Реквизиты для оплаты: ', ['class'=>'main_label req']) }}
+						{{ Form::file('requisites', ['class'=>'change_input change_input_code form-control',]) }}
+					</div>
+				</div>
             </div>
             <div class="delivery_type">
                 <label for="delivery" class="main_label req">Способ доставки</label>
@@ -116,7 +139,7 @@
                     {{ Form::label('address', 'Адрес: ', ['class'=>'main_label']) }}
                     {{ Form::text('address', null, ['class'=>'change_input change_input_code form-control',]) }}
                 </div>
-            </div>
+			</div>
             <div class="comment">
                 {{ Form::label('comment', 'Комментарий: ', ['class'=>'main_label']) }}
                 {{ Form::textarea('comment', null, ['class'=>'change_input change_input_code form-control',]) }}
@@ -126,7 +149,6 @@
 				@else
 					{{ Form::hidden('registered', null) }}
 				@endif
-            </div>
             {{Form::submit('Отправить', ['class'=>'submit_field save_button btn'])}}
         {{Form::close()}}
     </div>

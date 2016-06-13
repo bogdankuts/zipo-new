@@ -5,9 +5,17 @@
 @extends('partials/right_sidebar')
 
 @section('meta')
-	<title>Зип Общепит - {{ $item->title }}</title>
+	@if($item->meta_title !== '')
+		<title>Зип Общепит - {{ $item->meta_title }}</title>
+	@else
+		<title>Зип Общепит - {{ $item->title }}</title>
+	@endif
 	<meta name='keywords' content='{{ $item->producer }} - {{ $item->title }} купить в Санкт-Петербурге'>
-	<meta name='description' content='{{ $item->producer }} - {{ $item->title }}. {{ $item->description }}'>
+	@if($item->meta_description !== '')
+		<meta name='description' content='{{$item->meta_description}}'>
+	@else
+		<meta name='description' content='{{ $item->producer }} - {{ $item->title }}. {{ $item->description }}'>
+	@endif
 @stop
 
 @section('body')

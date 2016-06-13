@@ -28,6 +28,17 @@ class CartController extends BaseController {
 
 	public function order() {
 		$data = Input::all();
+
+		if($data['form'] === 'physic') {
+			unset($data['payment_jura']);
+			$data['payment'] = $data['payment_physic'];
+			unset($data['payment_physic']);
+		} else {
+			unset($data['payment_physic']);
+			$data['payment'] = $data['payment_jura'];
+			unset($data['payment_jura']);
+		}
+
 		$orderItems = $_COOKIE['shopcartItems'];
 		$email = $data['email'];
 		$file = $data['requisites'];
@@ -115,6 +126,7 @@ class CartController extends BaseController {
 		$orderData['address'] = $data['address'];
 		$orderData['comment'] = $data['comment'];
 		$orderData['state'] = 1;
+		$orderData['payment'] = $data['payment'];
 
 		$order = Order::create($orderData);
 

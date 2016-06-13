@@ -29,6 +29,16 @@
 				<p class="heading">Доставка</p>
 				<p class="value">{{$order->delivery}}</p>
 			</div>
+			<div class="line">
+				<p class="heading">Оплата</p>
+				@if($order->payment === 'card')
+					<p class="value">Оплата на карту "Сбербанка"(скидка 10% не указана в сумме заказа!)</p>
+				@elseif ($order->payment === 'check')
+					<p class="value">Оплата по счету(юр.лица)</p>
+				@else
+					<p class="value">Оплата по счету(физ.лица)</p>
+				@endif
+			</div>
 			@if($order->address != '')
 				<div class="line">
 					<p class="heading">Адресс</p>

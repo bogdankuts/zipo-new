@@ -16,10 +16,12 @@ class Order extends BaseModel {
 		$orders = $orders
 			->join('clients', 'clients.client_id', '=', 'orders.client_id')
 			->join('states', 'states.state_id' , '=', 'orders.state');
+
 		return $orders
 			->where('deleted', '!=', 1)
 			->where('state', '!=', '3')
 			->orderBy('date', 'asc')->take(10)->get();
+
 	}
 
 	public static function getRecentDoneOrders() {
@@ -29,6 +31,18 @@ class Order extends BaseModel {
 			->where('deleted', '!=', 1)
 			->where('state', '=', '3')
 			->orderBy('date', 'asc')->take(10)->get();
+	}
+
+	public function getNewOrders($last_visit) {
+		$orders = new Order;
+		$orders = $orders
+			->join('clients', 'clients.client_id', '=', 'orders.client_id')
+			->join('states', 'states.state_id' , '=', 'orders.state')
+			->where('deleted', '!=', 1)
+			->whereBetween('date', array($last_visit, date('Y-m-d')))
+			->get();
+
+		return $orders;
 	}
 
 	private function getFullOrderItems($order) {
